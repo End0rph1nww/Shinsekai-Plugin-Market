@@ -62,6 +62,6 @@ const siteUrl = import.meta.env.VITE_SITE_URL || '/'
 const submitUrl = import.meta.env.VITE_SUBMIT_URL || SUBMIT_PLUGIN_URL
 
 const railStyle = ({ checked }) => ({
-  background: checked ? '#4a3268' : '#7c8fb8'
+  background: checked ? '#8f314f' : '#e8789a'
 })
 </script>

@@ -2,9 +2,9 @@ export const lightThemeOverrides = {
   common: {
     duration: '0.2s',
     borderRadius: '10px',
-    primaryColor: '#6f55f2',
-    primaryColorHover: '#8b72ff',
-    primaryColorPressed: '#5740d7',
+    primaryColor: '#e8789a',
+    primaryColorHover: '#ef8fad',
+    primaryColorPressed: '#d85b84',
     infoColor: '#e8789a',
     successColor: '#10b981',
     warningColor: '#f59e0b',
@@ -19,8 +19,8 @@ export const lightThemeOverrides = {
     colorModal: 'rgba(255, 251, 255, 0.98)'
   },
   Input: {
-    borderHover: '#8b72ff',
-    borderFocus: '#6f55f2'
+    borderHover: '#ef8fad',
+    borderFocus: '#e8789a'
   },
   Select: {
     peers: {
@@ -29,10 +29,10 @@ export const lightThemeOverrides = {
         placeholderColor: '#8b728f',
         color: 'rgba(255, 255, 255, 0.78)',
         colorActive: 'rgba(255, 255, 255, 0.94)',
-        border: '1px solid rgba(111, 85, 242, 0.24)',
-        borderHover: '1px solid #8b72ff',
-        borderActive: '1px solid #6f55f2',
-        borderFocus: '1px solid #6f55f2'
+        border: '1px solid rgba(232, 120, 154, 0.24)',
+        borderHover: '1px solid #ef8fad',
+        borderActive: '1px solid #e8789a',
+        borderFocus: '1px solid #e8789a'
       }
     }
   },

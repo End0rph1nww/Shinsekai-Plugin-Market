@@ -2,9 +2,9 @@ export const darkThemeOverrides = {
   common: {
     duration: '0.2s',
     borderRadius: '10px',
-    primaryColor: '#a78bfa',
-    primaryColorHover: '#c4b5fd',
-    primaryColorPressed: '#8b5cf6',
+    primaryColor: '#fb7185',
+    primaryColorHover: '#fb8da0',
+    primaryColorPressed: '#f43f5e',
     infoColor: '#fb7185',
     successColor: '#34d399',
     warningColor: '#fbbf24',
@@ -19,8 +19,8 @@ export const darkThemeOverrides = {
     colorModal: 'rgba(35, 24, 52, 0.98)'
   },
   Input: {
-    borderHover: '#c4b5fd',
-    borderFocus: '#a78bfa'
+    borderHover: '#fb8da0',
+    borderFocus: '#fb7185'
   },
   Select: {
     peers: {
@@ -29,10 +29,10 @@ export const darkThemeOverrides = {
         placeholderColor: '#bda7c8',
         color: 'rgba(35, 24, 52, 0.78)',
         colorActive: 'rgba(35, 24, 52, 0.96)',
-        border: '1px solid rgba(167, 139, 250, 0.32)',
-        borderHover: '1px solid #c4b5fd',
-        borderActive: '1px solid #a78bfa',
-        borderFocus: '1px solid #a78bfa'
+        border: '1px solid rgba(251, 113, 133, 0.32)',
+        borderHover: '1px solid #fb8da0',
+        borderActive: '1px solid #fb7185',
+        borderFocus: '1px solid #fb7185'
       }
     }
   },
