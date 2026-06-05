@@ -2,6 +2,8 @@ import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { DEFAULT_REGISTRY_URL, normalizeRegistryPayload } from '../utils/pluginNormalizer'
 
+const PAGE_SIZE = 9
+
 function resolveRegistryUrl() {
   return import.meta.env.VITE_PLUGIN_REGISTRY_URL || DEFAULT_REGISTRY_URL
 }
@@ -11,7 +13,8 @@ export const usePluginStore = defineStore('plugins', () => {
   const plugins = ref([])
   const searchQuery = ref('')
   const selectedTag = ref('all')
-  const sortBy = ref('name')
+  const sortBy = ref('recommended')
+  const currentPage = ref(1)
   const isDarkMode = ref(savedTheme === 'dark')
   const isLoading = ref(false)
   const error = ref('')
@@ -19,6 +22,10 @@ export const usePluginStore = defineStore('plugins', () => {
 
   watch(isDarkMode, (newValue) => {
     localStorage.setItem('theme-preference', newValue ? 'dark' : 'light')
+  })
+
+  watch([searchQuery, selectedTag, sortBy], () => {
+    currentPage.value = 1
   })
 
   const toggleTheme = () => {
@@ -94,8 +101,31 @@ export const usePluginStore = defineStore('plugins', () => {
         return a.displayName.localeCompare(b.displayName, 'zh-CN')
       }
 
+      if (sortBy.value === 'repo') {
+        return Number(Boolean(b.repo)) - Number(Boolean(a.repo))
+          || a.displayName.localeCompare(b.displayName, 'zh-CN')
+      }
+
+      if (sortBy.value === 'recommended') {
+        return Number(b.installable) - Number(a.installable)
+          || Number(Boolean(b.logo)) - Number(Boolean(a.logo))
+          || a.displayName.localeCompare(b.displayName, 'zh-CN')
+      }
+
       return a.displayName.localeCompare(b.displayName, 'zh-CN')
     })
+  })
+
+  const totalPages = computed(() => Math.max(1, Math.ceil(filteredPlugins.value.length / PAGE_SIZE)))
+
+  const paginatedPlugins = computed(() => {
+    const page = Math.min(currentPage.value, totalPages.value)
+    const start = (page - 1) * PAGE_SIZE
+    return filteredPlugins.value.slice(start, start + PAGE_SIZE)
+  })
+
+  watch(totalPages, (value) => {
+    if (currentPage.value > value) currentPage.value = value
   })
 
   async function loadPlugins(url = registryUrl.value) {
@@ -132,7 +162,13 @@ export const usePluginStore = defineStore('plugins', () => {
   }
 
   function setSortBy(value) {
-    sortBy.value = value || 'name'
+    sortBy.value = value || 'recommended'
+  }
+
+  function setPage(value) {
+    const page = Number(value)
+    if (!Number.isFinite(page)) return
+    currentPage.value = Math.min(Math.max(1, page), totalPages.value)
   }
 
   return {
@@ -140,20 +176,25 @@ export const usePluginStore = defineStore('plugins', () => {
     searchQuery,
     selectedTag,
     sortBy,
+    currentPage,
     isDarkMode,
     isLoading,
     error,
     registryUrl,
+    pageSize: PAGE_SIZE,
     allTags,
     hasRegistryTags,
     filterOptions,
     stats,
     filteredPlugins,
+    paginatedPlugins,
+    totalPages,
     loadPlugins,
     setDarkMode,
     setSearchQuery,
     setSelectedTag,
     setSortBy,
+    setPage,
     toggleTheme
   }
 })

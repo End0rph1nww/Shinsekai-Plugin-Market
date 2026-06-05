@@ -1,8 +1,8 @@
 # Shinsekai Plugin Market
 
-Shinsekai 插件市场前台壳，用于浏览、安装信息复制、提交和维护 Shinsekai 插件。
+Shinsekai 插件市场前台，用于浏览、提交和维护 Shinsekai 插件。
 
-Based on AstrBotDevs/Astrbot_Plugins_Market, modified for Shinsekai Plugin Market.
+Based on `AstrBotDevs/Astrbot_Plugins_Market`, modified for Shinsekai Plugin Market.
 
 ## Scope
 
@@ -20,8 +20,9 @@ Based on AstrBotDevs/Astrbot_Plugins_Market, modified for Shinsekai Plugin Marke
 
 - 插件列表
 - 搜索：`name` / `description` / `author` / `repo`
-- 分类或标签筛选
-- 排序：名称 / 作者 / 更新时间
+- 标签和基础状态筛选
+- 排序：默认 / 名称 / 作者 / 更新时间 / 仓库优先
+- 分页浏览
 - 插件详情抽屉
 - GitHub 仓库跳转
 - 复制安装信息
@@ -29,7 +30,7 @@ Based on AstrBotDevs/Astrbot_Plugins_Market, modified for Shinsekai Plugin Marke
 - loading / error / empty 状态
 - 移动端适配
 
-## Data source
+## Data Source
 
 通过 Vite 环境变量配置 registry：
 
@@ -49,7 +50,7 @@ https://raw.githubusercontent.com/End0rph1nww/Shinsekai-Plugin-Registry/main/plu
 https://raw.githubusercontent.com/RachelForster/Shinsekai-Plugin-Registry/main/plugins.json
 ```
 
-## Registry format
+## Registry Format
 
 当前兼容旧字段：
 
@@ -94,8 +95,6 @@ npm ci
 npm run dev -- --host 0.0.0.0
 ```
 
-默认开发端口是 `3000`。
-
 ## Build
 
 生产构建：
@@ -110,7 +109,7 @@ npm run build
 npm run preview -- --host 0.0.0.0
 ```
 
-## Submission flow
+## Submission Flow
 
 “提交插件”按钮会跳转到上游 registry issue 页面：
 
@@ -118,13 +117,13 @@ npm run preview -- --host 0.0.0.0
 https://github.com/RachelForster/Shinsekai-Plugin-Registry/issues/new
 ```
 
-你的测试 fork：
+测试 fork：
 
 ```text
 https://github.com/End0rph1nww/Shinsekai-Plugin-Registry
 ```
 
-## License and attribution
+## License And Attribution
 
 This project is based on `AstrBotDevs/Astrbot_Plugins_Market` and keeps the original GPL-3.0 license.
 

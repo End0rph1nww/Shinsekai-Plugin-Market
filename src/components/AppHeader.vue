@@ -2,17 +2,18 @@
   <header class="site-header">
     <div class="site-header__inner">
       <a class="site-brand" href="https://shinsekai.end0rph1n.icu/" target="_blank" rel="noreferrer">
-        <span class="site-brand__mark">新</span>
-        <span>
-          <strong>Shinsekai Resource Station</strong>
-          <small>Plugin Market Console</small>
+        <img class="site-brand__logo" src="/plugin-market-logo.png" alt="Shinsekai Plugin Market" />
+        <span class="site-brand__text">
+          <strong>Shinsekai</strong>
+          <small>Plugin Market</small>
         </span>
       </a>
 
       <nav class="site-nav" aria-label="Shinsekai navigation">
-        <a href="https://shinsekai.end0rph1n.icu/" target="_blank" rel="noreferrer">资源站</a>
+        <a href="https://shinsekai.end0rph1n.icu/" target="_blank" rel="noreferrer">首页</a>
         <a href="https://shinsekai.end0rph1n.icu/discussions" target="_blank" rel="noreferrer">讨论板</a>
-        <a href="https://github.com/End0rph1nww/Shinsekai-Plugin-Registry" target="_blank" rel="noreferrer">Registry Fork</a>
+        <a href="https://github.com/RachelForster/Shinsekai" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="https://github.com/RachelForster/Shinsekai-Plugin-Registry" target="_blank" rel="noreferrer">Registry</a>
       </nav>
 
       <div class="site-actions">
@@ -48,6 +49,6 @@ defineProps({
 defineEmits(['update:modelValue'])
 
 const railStyle = ({ checked }) => ({
-  background: checked ? '#351f4e' : 'linear-gradient(135deg, #e8789a, #6f55f2)'
+  background: checked ? '#4a3268' : 'linear-gradient(135deg, #e8789a, #7c63f4)'
 })
 </script>

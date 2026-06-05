@@ -1,20 +1,19 @@
 <template>
   <div class="market-page">
     <app-header v-model="isDarkMode" />
-    <main class="discussion-shell market-shell submit-shell">
-      <section class="discussion-hero market-hero">
-        <div>
-          <p class="eyebrow">SHINSEKAI SYSTEM / 提交插件</p>
-          <h1>通过 registry issue 提交你的插件。</h1>
-          <p class="market-hero__lead">当前市场不提供登录和上传服务，请把插件信息提交到公开 registry，由维护者审核后合并。</p>
-        </div>
+    <main class="market-shell submit-shell">
+      <section class="market-hero">
+        <p class="eyebrow">SHINSEKAI SYSTEM / SUBMIT PLUGIN</p>
+        <h1>提交 Shinsekai 插件</h1>
+        <p class="market-hero__lead">
+          当前市场不提供登录和上传服务。插件信息通过公开 registry issue 提交，由维护者审核后合并。
+        </p>
         <n-button type="primary" tag="a" href="https://github.com/RachelForster/Shinsekai-Plugin-Registry/issues/new" target="_blank" rel="noreferrer">
           打开提交 Issue
         </n-button>
       </section>
 
-      <section class="discussion-panel submit-guide">
-        <p class="discussion-panel-title">提交字段建议</p>
+      <section class="submit-guide">
         <div class="guide-grid">
           <div>
             <h2>当前兼容字段</h2>

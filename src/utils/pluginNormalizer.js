@@ -17,10 +17,10 @@ function normalizeRepo(repo) {
 
 function normalizeTags(tags, plugin) {
   if (Array.isArray(tags)) return tags.map(tag => asString(tag)).filter(Boolean)
-  if (typeof tags === 'string') return tags.split(/[，,]/).map(tag => tag.trim()).filter(Boolean)
+  if (typeof tags === 'string') return tags.split(/[,，、\s]+/).map(tag => tag.trim()).filter(Boolean)
 
   const fallback = []
-  if (plugin?.entry) fallback.push('可安装')
+  if (plugin?.entry || plugin?.download_url) fallback.push('可安装')
   if (plugin?.repo) fallback.push('已收录')
   return fallback
 }
@@ -40,6 +40,8 @@ export function normalizePlugin(raw, index = 0) {
   const repoUrl = normalizeRepo(repo)
   const updatedAtDate = parseDate(source.updated_at)
   const tags = normalizeTags(source.tags, source)
+  const description = asString(source.description || source.desc, '这个插件还没有提供描述。')
+  const version = asString(source.version, '未标注')
 
   return {
     id: asString(source.id, name || `plugin-${index + 1}`),
@@ -49,10 +51,10 @@ export function normalizePlugin(raw, index = 0) {
     author: asString(source.author, 'Unknown'),
     repo,
     repoUrl,
-    description: asString(source.description || source.desc, '这个插件还没有提供描述。'),
-    desc: asString(source.description || source.desc, '这个插件还没有提供描述。'),
+    description,
+    desc: description,
     entry: asString(source.entry),
-    version: asString(source.version, '未标注'),
+    version,
     shinsekaiVersion: asString(source.shinsekai_version),
     downloadUrl: asString(source.download_url),
     sha256: asString(source.sha256),

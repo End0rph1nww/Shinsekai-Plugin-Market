@@ -4,7 +4,7 @@
       <div>
         <p class="eyebrow">SHINSEKAI RESOURCE STATION</p>
         <h2>Shinsekai 插件市场</h2>
-        <p>前端-only 插件浏览壳，基于公开 registry JSON 展示插件信息。</p>
+        <p>前端浏览壳，基于公开 registry JSON 展示插件信息。</p>
       </div>
       <div class="footer-links">
         <a href="https://github.com/End0rph1nww/Shinsekai-Plugin-Registry" target="_blank" rel="noreferrer">Registry Fork</a>

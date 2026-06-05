@@ -5,30 +5,23 @@
       <input
         :value="searchQuery"
         type="search"
-        placeholder="搜索 name / description / author / repo"
+        placeholder="搜索插件、作者、仓库..."
         @input="emit('update:searchQuery', $event.target.value)"
       />
       <button v-if="searchQuery" type="button" @click="emit('update:searchQuery', '')">清除</button>
     </label>
 
-    <div class="market-toolbar__controls">
-      <label>
-        <span>筛选</span>
-        <select :value="selectedTag" @change="emit('update:selectedTag', $event.target.value)">
-          <option v-for="option in filterOptions" :key="option.value" :value="option.value">
-            {{ option.label }}
-          </option>
-        </select>
-      </label>
-
-      <label>
-        <span>排序</span>
-        <select :value="sortBy" @change="emit('update:sortBy', $event.target.value)">
-          <option value="name">名称</option>
-          <option value="author">作者</option>
-          <option value="updated">更新时间</option>
-        </select>
-      </label>
+    <div class="market-filter-row" aria-label="插件筛选">
+      <button
+        v-for="option in filterOptions"
+        :key="option.value"
+        type="button"
+        class="market-filter-chip"
+        :class="{ active: selectedTag === option.value }"
+        @click="emit('update:selectedTag', option.value)"
+      >
+        {{ option.label }}
+      </button>
     </div>
   </div>
 </template>
@@ -46,15 +39,11 @@ defineProps({
     type: String,
     default: 'all'
   },
-  sortBy: {
-    type: String,
-    default: 'name'
-  },
   filterOptions: {
     type: Array,
     default: () => []
   }
 })
 
-const emit = defineEmits(['update:searchQuery', 'update:selectedTag', 'update:sortBy'])
+const emit = defineEmits(['update:searchQuery', 'update:selectedTag'])
 </script>
