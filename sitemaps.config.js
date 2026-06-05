@@ -1,7 +1,3 @@
 export default [
-  'https://blog.astrbot.app/sitemap.xml',
-  'https://astrbot.app/sitemap.xml',
-  'https://astrbot.tech/sitemap.xml',
-  'https://docs.astrbot.app/sitemap.xml',
-  'https://docs.astrbot.tech/sitemap.xml'
+  'https://shinsekai.end0rph1n.icu/sitemap.xml'
 ]

@@ -1,164 +1,873 @@
 :root {
-  /* 主色调 - 钢蓝色系 */
-  --primary-color: #4682b4;
-  --primary-hover: #5a9bd4;
-  --primary-active: #336699;
-  --primary-light: rgba(70, 130, 180, 0.1);
-
-  /* 背景色 - 增加层次感 */
-  --bg-base: #fafbfc;
-  --bg-card: #ffffff;
-  --bg-hover: #f0f4f8;
-  --bg-n-tag: #e0f2fe;
-  --bg-header: #b3d4fc;
-
-  /* 文本颜色 - 提升对比度 */
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-tertiary: #64748b;
-  --text-tag: #ffffff;
-  --text-n-tag: #0277bd;
-  --pagination-text: #000;
-  --success-color: var(--primary-color);
-
-  /* 边框颜色 */
-  --border-base: #e2e8f0;
-  --border-hover: #4682b4;
-
-  /* 阴影 - 更自然的阴影效果 */
-  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-
-  /* Header专用CSS变量 - 钢蓝色渐变 */
-  --header-gradient: linear-gradient(135deg, #4682b4 0%, #2c5aa0 50%, #1e3a8a 100%);
-  --header-overlay: radial-gradient(circle at top right, rgba(255,255,255,0.1), transparent);
-  --header-text-color: rgba(255, 255, 255, 0.95);
-  --header-text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  --search-bg: rgba(255, 255, 255, 0.15);
-  --input-bg: rgba(255, 255, 255, 0.2);
-  --input-bg-hover: rgba(255, 255, 255, 0.25);
-  --input-bg-focus: rgba(255, 255, 255, 0.3);
-  --input-text: rgba(255, 255, 255, 0.95);
-  --input-placeholder: rgba(255, 255, 255, 0.7);
-  --input-border: rgba(255, 255, 255, 0.2);
-  --input-border-hover: rgba(255, 255, 255, 0.3);
-  --input-border-focus: rgba(255, 255, 255, 0.4);
-  
-  /* Sticky Header */
-  --sticky-bg: rgba(255, 255, 255, 0.6);
-  
-  /* 下拉菜单变量 */
-  --dropdown-bg: #ffffff;
-  --dropdown-text: #0f172a;
-  --dropdown-border: #e2e8f0;
-
-  /* 滚动条变量 */
-  --scrollbar-track: transparent;
-  --scrollbar-thumb: rgba(203, 213, 225, 0.3);
-  --scrollbar-thumb-hover: rgba(148, 163, 184, 0.5);
-  --scrollbar-width: 6px;
+  --sys-ink: #351f4e;
+  --sys-purple: #6f55f2;
+  --sys-purple-soft: rgba(111, 85, 242, 0.16);
+  --sys-purple-line: rgba(90, 70, 210, 0.28);
+  --sys-rose: #e8789a;
+  --sys-rose-soft: rgba(232, 120, 154, 0.18);
+  --sys-rose-line: rgba(212, 120, 142, 0.36);
+  --sys-panel: rgba(255, 251, 255, 0.78);
+  --sys-panel-solid: rgba(255, 252, 255, 0.94);
+  --sys-grid: rgba(107, 91, 214, 0.18);
+  --bg-base: #fff7fb;
+  --bg-card: rgba(255, 251, 255, 0.82);
+  --bg-hover: rgba(255, 255, 255, 0.66);
+  --text-primary: var(--sys-ink);
+  --text-secondary: #6f5876;
+  --text-tertiary: #9d6a80;
+  --border-base: var(--sys-purple-line);
+  --primary-color: var(--sys-purple);
+  --primary-hover: #8b72ff;
+  --shadow-sm: 0 8px 24px rgba(180, 80, 106, 0.08);
+  --shadow-md: 0 12px 38px rgba(180, 80, 106, 0.12);
+  --shadow-lg: 0 24px 72px rgba(118, 54, 76, 0.2);
 }
 
-/* 滚动条样式 */
+.dark {
+  --sys-ink: #f7ecff;
+  --sys-purple: #a78bfa;
+  --sys-purple-soft: rgba(167, 139, 250, 0.18);
+  --sys-purple-line: rgba(196, 181, 253, 0.26);
+  --sys-rose: #fb7185;
+  --sys-rose-soft: rgba(251, 113, 133, 0.16);
+  --sys-rose-line: rgba(251, 113, 133, 0.28);
+  --sys-panel: rgba(35, 24, 52, 0.78);
+  --sys-panel-solid: rgba(35, 24, 52, 0.96);
+  --sys-grid: rgba(196, 181, 253, 0.12);
+  --bg-base: #130d1e;
+  --bg-card: rgba(35, 24, 52, 0.82);
+  --bg-hover: rgba(51, 34, 73, 0.72);
+  --text-primary: #f7ecff;
+  --text-secondary: #d7c2df;
+  --text-tertiary: #bda7c8;
+  --border-base: var(--sys-purple-line);
+  --primary-color: var(--sys-purple);
+  --primary-hover: #c4b5fd;
+  --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.22);
+  --shadow-md: 0 14px 44px rgba(0, 0, 0, 0.28);
+  --shadow-lg: 0 24px 72px rgba(0, 0, 0, 0.36);
+}
+
 ::-webkit-scrollbar {
-  width: var(--scrollbar-width);
-  height: var(--scrollbar-width);
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--scrollbar-track);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb);
-  border-radius: 10px;
-  transition: all 0.2s ease;
+  background: rgba(111, 85, 242, 0.24);
+  border-radius: 999px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollbar-thumb-hover);
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid var(--sys-purple-line);
+  background: rgba(255, 250, 253, 0.76);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
-/* Firefox 滚动条样式 */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+.dark .site-header {
+  background: rgba(19, 13, 30, 0.78);
 }
 
-/* Firefox 暗色模式滚动条 */
-.dark * {
-  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+.site-header__inner {
+  width: min(1240px, calc(100% - 2rem));
+  min-height: 4.2rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-/* Webkit 暗色模式滚动条 */
-.dark ::-webkit-scrollbar-track {
-  background: var(--scrollbar-track);
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--text-primary);
+  text-decoration: none;
 }
 
-.dark ::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb);
+.site-brand__mark,
+.plugin-card__logo,
+.plugin-detail__logo {
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  background: linear-gradient(135deg, var(--sys-rose), var(--sys-purple));
+  color: #fff;
+  box-shadow: 5px 5px 0 rgba(111, 85, 242, 0.12);
+  font-family: "Fira Code", "Consolas", monospace;
+  font-weight: 900;
 }
 
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollbar-thumb-hover);
+.site-brand__mark {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0.55rem;
 }
 
-/* 暗色主题 */
-.dark {
-  /* 主色调 - 暗色模式下的钢蓝色 */
-  --primary-color: #5a9bd4;
-  --primary-hover: #7bb3e0;
-  --primary-active: #4682b4;
-  --primary-light: rgba(90, 155, 212, 0.15);
+.site-brand strong,
+.site-brand small {
+  display: block;
+}
 
-  /* 背景色 - 现代暗色背景 */
-  --bg-base: #0f172a;
-  --bg-card: #1e293b;
-  --bg-hover: #334155;
-  --bg-n-tag: #0c4a6e;
+.site-brand strong {
+  font-size: 0.98rem;
+}
 
-  /* 文本颜色 - 暗色模式下的高对比度 */
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-tertiary: #94a3b8;
-  --text-n-tag: #38bdf8;
-  --pagination-text: #fff;
+.site-brand small {
+  color: var(--text-tertiary);
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 0.72rem;
+}
 
-  /* 边框颜色 */
-  --border-base: #334155;
-  --border-hover: #5a9bd4;
+.site-nav,
+.site-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
 
-  /* 阴影 - 暗色模式下的阴影 */
-  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.5);
+.site-nav a {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0.42rem 0.72rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: 0.18s ease;
+}
 
-  /* Header专用CSS变量 - 暗色模式钢蓝渐变 */
-  --header-gradient: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1e293b 100%);
-  --header-overlay: radial-gradient(circle at top right, rgba(90, 155, 212, 0.1), transparent);
-  --header-text-color: rgba(255, 255, 255, 0.95);
-  --header-text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-  --search-bg: rgba(0, 0, 0, 0.3);
-  --input-bg: rgba(0, 0, 0, 0.4);
-  --input-bg-hover: rgba(0, 0, 0, 0.5);
-  --input-bg-focus: rgba(0, 0, 0, 0.6);
-  --input-text: rgba(255, 255, 255, 0.95);
-  --input-placeholder: rgba(255, 255, 255, 0.6);
-  --input-border: rgba(255, 255, 255, 0.15);
-  --input-border-hover: rgba(255, 255, 255, 0.25);
-  --input-border-focus: rgba(90, 155, 212, 0.5);
-  
-  /* Sticky Header */
-  --sticky-bg: rgba(30, 41, 59, 0.6);
-  
-  /* 下拉菜单变量 */
-  --dropdown-bg: #1e293b;
-  --dropdown-text: #f8fafc;
-  --dropdown-border: #334155;
-  
-  /* 滚动条变量 */
-  --scrollbar-track: transparent;
-  --scrollbar-thumb: rgba(255, 255, 255, 0.2);
-  --scrollbar-thumb-hover: rgba(90, 155, 212, 0.5);
+.site-nav a:hover {
+  border-color: var(--sys-purple-line);
+  background: var(--sys-purple-soft);
+  color: var(--text-primary);
+}
+
+.discussion-shell {
+  position: relative;
+  isolation: isolate;
+  width: min(1240px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 1.2rem 0 0;
+}
+
+.discussion-shell::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  right: 50%;
+  height: 100%;
+  width: 100vw;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--sys-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--sys-grid) 1px, transparent 1px),
+    radial-gradient(circle at 78% 10%, rgba(111, 85, 242, 0.18), transparent 34%),
+    radial-gradient(circle at 10% 18%, rgba(232, 120, 154, 0.2), transparent 28%);
+  background-size: 64px 64px, 64px 64px, auto, auto;
+  mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,0.72) 58%, transparent 100%);
+}
+
+.discussion-shell::after {
+  content: "SHINSEKAI";
+  position: absolute;
+  top: 2rem;
+  right: 0;
+  z-index: -1;
+  color: rgba(92, 70, 210, 0.1);
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: clamp(3.6rem, 11vw, 9rem);
+  font-weight: 900;
+  letter-spacing: -0.09em;
+  line-height: 0.8;
+  pointer-events: none;
+}
+
+.discussion-hero,
+.discussion-panel,
+.plugin-card {
+  border: 1px solid var(--sys-purple-line);
+  background: var(--sys-panel);
+  box-shadow: 8px 8px 0 rgba(111, 85, 242, 0.07);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.discussion-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: 0;
+  padding: 1.15rem;
+  background: linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255, 238, 248, 0.64));
+}
+
+.dark .discussion-hero {
+  background: linear-gradient(135deg, rgba(45, 30, 65, 0.86), rgba(53, 31, 78, 0.7));
+}
+
+.eyebrow {
+  margin: 0 0 0.4rem;
+  color: var(--sys-purple);
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.market-hero h1,
+.panel-heading h2,
+.submit-guide h2,
+.app-footer h2 {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.market-hero h1 {
+  max-width: 48rem;
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: clamp(1.9rem, 4vw, 3.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+}
+
+.market-hero__lead {
+  max-width: 44rem;
+  margin: 0.85rem 0 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.market-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.65rem;
+}
+
+.market-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+  align-items: start;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.discussion-panel {
+  border-radius: 0.86rem;
+  padding: 1.05rem;
+}
+
+.discussion-panel::before {
+  content: "/shinsekai/plugins";
+  display: block;
+  margin: -1.05rem -1.05rem 0.9rem;
+  border-bottom: 1px solid var(--sys-purple-line);
+  border-radius: 0.86rem 0.86rem 0 0;
+  background: rgba(255, 255, 255, 0.56);
+  color: rgba(53, 31, 78, 0.58);
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  padding: 0.48rem 0.72rem;
+}
+
+.dark .discussion-panel::before {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(247, 236, 255, 0.62);
+}
+
+.panel-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.panel-count,
+.status-pill {
+  border: 1px solid var(--sys-purple-line);
+  border-radius: 999px;
+  background: var(--sys-purple-soft);
+  color: var(--sys-purple);
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.28rem 0.55rem;
+}
+
+.market-toolbar {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.95rem;
+}
+
+.market-search,
+.market-toolbar__controls label {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--sys-purple-line);
+  border-radius: 0.72rem;
+  background: rgba(255, 255, 255, 0.62);
+  color: var(--text-secondary);
+}
+
+.dark .market-search,
+.dark .market-toolbar__controls label {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.market-search {
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 0.78rem;
+}
+
+.market-search input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.market-search button {
+  border: 0;
+  background: transparent;
+  color: var(--sys-purple);
+  cursor: pointer;
+}
+
+.market-toolbar__controls {
+  display: flex;
+  gap: 0.65rem;
+}
+
+.market-toolbar__controls label {
+  gap: 0.45rem;
+  min-height: 2.75rem;
+  padding: 0 0.45rem 0 0.72rem;
+  font-size: 0.82rem;
+}
+
+.market-toolbar select {
+  border: 0;
+  border-left: 1px solid var(--sys-purple-line);
+  outline: 0;
+  background: transparent;
+  color: var(--text-primary);
+  min-width: 7.2rem;
+  padding: 0.35rem 0.45rem;
+}
+
+.plugin-list {
+  display: grid;
+  gap: 0.72rem;
+}
+
+.plugin-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.4rem minmax(0, 1fr) minmax(7.5rem, auto);
+  gap: 0.85rem;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 0.86rem;
+  padding: 0.85rem;
+  cursor: pointer;
+  transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.plugin-card:hover {
+  border-color: var(--sys-purple);
+  background: var(--sys-panel-solid);
+  transform: translateY(-1px);
+}
+
+.plugin-card::before {
+  content: "NODE";
+  position: absolute;
+  top: 0.45rem;
+  right: 0.68rem;
+  color: rgba(111, 85, 242, 0.16);
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  pointer-events: none;
+}
+
+.plugin-card__logo,
+.plugin-detail__logo {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.plugin-card__logo img,
+.plugin-detail__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.plugin-card__body {
+  min-width: 0;
+}
+
+.plugin-card__title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.plugin-card h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.02rem;
+}
+
+.plugin-card__name {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text-tertiary);
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 0.74rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.plugin-card p {
+  margin: 0.35rem 0;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.plugin-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  color: var(--text-tertiary);
+  font-size: 0.8rem;
+}
+
+.plugin-card__tags,
+.plugin-detail__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.48rem;
+}
+
+.market-chip {
+  border: 1px solid var(--sys-purple-line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.58);
+  color: var(--text-primary);
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 0.72rem;
+  padding: 0.18rem 0.45rem;
+}
+
+.dark .market-chip {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.plugin-card__status {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: end;
+  gap: 0.35rem;
+  color: var(--text-tertiary);
+  font-size: 0.78rem;
+}
+
+.plugin-card__status a,
+.plugin-card__status button,
+.sidebar-filter {
+  border: 1px solid var(--sys-purple-line);
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.58);
+  color: var(--text-primary);
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.16s ease;
+}
+
+.plugin-card__status a,
+.plugin-card__status button {
+  padding: 0.25rem 0.48rem;
+}
+
+.plugin-card__status a:hover,
+.plugin-card__status button:hover,
+.sidebar-filter:hover,
+.sidebar-filter.active {
+  border-color: var(--sys-purple);
+  background: var(--sys-purple);
+  color: #fff;
+}
+
+.market-sidebar {
+  display: grid;
+  gap: 1rem;
+  position: sticky;
+  top: 5.4rem;
+}
+
+.discussion-panel-title {
+  margin: 0 0 0.8rem;
+  color: var(--text-primary);
+  font-family: "Fira Code", "Consolas", monospace;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.discussion-panel-title::before {
+  content: "// ";
+  color: var(--sys-purple);
+}
+
+.sidebar-filter {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.42rem;
+  padding: 0.55rem 0.7rem;
+}
+
+.sidebar-list {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--text-secondary);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.stats-grid div {
+  border: 1px solid var(--sys-purple-line);
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.52);
+  padding: 0.72rem;
+}
+
+.dark .stats-grid div {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.stats-grid strong,
+.stats-grid span {
+  display: block;
+}
+
+.stats-grid strong {
+  color: var(--sys-purple);
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 1.35rem;
+}
+
+.stats-grid span {
+  color: var(--text-tertiary);
+  font-size: 0.8rem;
+}
+
+.state-card {
+  display: grid;
+  place-items: center;
+  gap: 0.65rem;
+  min-height: 18rem;
+  border: 1px dashed var(--sys-purple-line);
+  border-radius: 0.86rem;
+  background: rgba(255, 255, 255, 0.42);
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 1.5rem;
+  word-break: break-all;
+}
+
+.state-card strong {
+  color: var(--text-primary);
+  font-size: 1.05rem;
+}
+
+.state-card--error {
+  border-color: rgba(239, 68, 68, 0.42);
+  background: rgba(239, 68, 68, 0.07);
+}
+
+.loading-orbit {
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 3px solid var(--sys-purple-soft);
+  border-top-color: var(--sys-purple);
+  border-radius: 999px;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.plugin-detail__header {
+  display: grid;
+  grid-template-columns: 3.4rem minmax(0, 1fr);
+  gap: 0.85rem;
+  align-items: start;
+}
+
+.plugin-detail__header h2 {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.plugin-detail__header p:last-child {
+  margin: 0.45rem 0 0;
+  color: var(--text-secondary);
+}
+
+.plugin-detail__section {
+  margin-top: 1.15rem;
+}
+
+.plugin-detail__section h3 {
+  margin: 0 0 0.65rem;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.detail-grid--wide {
+  grid-template-columns: 1fr;
+}
+
+.detail-grid div {
+  border: 1px solid var(--sys-purple-line);
+  border-radius: 0.68rem;
+  background: rgba(255, 255, 255, 0.46);
+  padding: 0.62rem;
+  min-width: 0;
+}
+
+.dark .detail-grid div {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.detail-grid dt {
+  color: var(--text-tertiary);
+  font-size: 0.76rem;
+}
+
+.detail-grid dd {
+  margin: 0.25rem 0 0;
+  color: var(--text-primary);
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+
+.plugin-detail__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.55rem;
+}
+
+.muted {
+  color: var(--text-tertiary);
+}
+
+.submit-shell {
+  min-height: calc(100vh - 13rem);
+}
+
+.submit-guide {
+  margin-top: 1rem;
+}
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.submit-guide code,
+.submit-guide pre {
+  font-family: "Fira Code", "Consolas", monospace;
+}
+
+.submit-guide pre {
+  overflow: auto;
+  border: 1px solid var(--sys-purple-line);
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.56);
+  color: var(--text-primary);
+  padding: 1rem;
+}
+
+.app-footer {
+  width: min(1240px, calc(100% - 2rem));
+  margin: 1rem auto 0;
+  padding: 1.25rem 0 1.75rem;
+  color: var(--text-secondary);
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  border-top: 1px solid var(--sys-purple-line);
+  padding-top: 1.2rem;
+}
+
+.footer-content p,
+.footer-license {
+  margin: 0.35rem 0 0;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: flex-end;
+}
+
+.footer-links a {
+  border: 1px solid var(--sys-purple-line);
+  border-radius: 999px;
+  padding: 0.38rem 0.65rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  background: var(--sys-purple-soft);
+  color: var(--text-primary);
+}
+
+.footer-license {
+  font-size: 0.82rem;
+}
+
+@media (max-width: 980px) {
+  .site-nav {
+    display: none;
+  }
+
+  .market-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .market-sidebar {
+    position: static;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    order: -1;
+  }
+}
+
+@media (max-width: 720px) {
+  .site-header__inner,
+  .discussion-shell,
+  .app-footer {
+    width: min(100% - 1rem, 1240px);
+  }
+
+  .site-header__inner {
+    min-height: auto;
+    padding: 0.68rem 0;
+    align-items: flex-start;
+  }
+
+  .site-brand small {
+    display: none;
+  }
+
+  .site-actions {
+    gap: 0.45rem;
+  }
+
+  .discussion-hero {
+    display: grid;
+    align-items: start;
+  }
+
+  .market-hero h1 {
+    font-size: 2rem;
+  }
+
+  .market-toolbar,
+  .market-toolbar__controls,
+  .plugin-card,
+  .footer-content,
+  .guide-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .market-toolbar__controls {
+    display: grid;
+  }
+
+  .plugin-card {
+    align-items: start;
+  }
+
+  .plugin-card__status {
+    justify-items: start;
+    grid-template-columns: repeat(2, max-content);
+  }
+
+  .market-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 460px) {
+  .site-actions .n-button {
+    display: none;
+  }
+
+  .market-hero__actions {
+    justify-content: stretch;
+  }
+
+  .market-hero__actions .n-button {
+    width: 100%;
+  }
 }

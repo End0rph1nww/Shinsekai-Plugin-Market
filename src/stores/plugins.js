@@ -1,140 +1,119 @@
 import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
+import { DEFAULT_REGISTRY_URL, normalizeRegistryPayload } from '../utils/pluginNormalizer'
+
+function resolveRegistryUrl() {
+  return import.meta.env.VITE_PLUGIN_REGISTRY_URL || DEFAULT_REGISTRY_URL
+}
 
 export const usePluginStore = defineStore('plugins', () => {
   const savedTheme = localStorage.getItem('theme-preference')
-  const plugins = ref(null)
+  const plugins = ref([])
   const searchQuery = ref('')
-  const selectedTag = ref(null)
-  const currentPage = ref(1)
-  const pageSize = ref(12)
+  const selectedTag = ref('all')
+  const sortBy = ref('name')
   const isDarkMode = ref(savedTheme === 'dark')
-  const isLoading = ref(true)
-  const sortBy = ref('default') 
-  const randomSeed = ref(0)
-  
+  const isLoading = ref(false)
+  const error = ref('')
+  const registryUrl = ref(resolveRegistryUrl())
+
   watch(isDarkMode, (newValue) => {
     localStorage.setItem('theme-preference', newValue ? 'dark' : 'light')
-  })
-
-  watch(sortBy, (value) => {
-    if (value === 'random') {
-      randomSeed.value = Math.random()
-    }
   })
 
   const toggleTheme = () => {
     isDarkMode.value = !isDarkMode.value
   }
 
-  function stableHash(input, seedNumber) {
-    let h = (Math.floor(seedNumber * 1e9) ^ 5381) >>> 0
-    for (let i = 0; i < input.length; i += 1) {
-      h = (((h << 5) + h) + input.charCodeAt(i)) >>> 0 
-    }
-    return h >>> 0
-  }
-
   const allTags = computed(() => {
     const tags = new Set()
-    if (plugins.value) {
-      plugins.value.forEach(plugin => {
-        if (plugin.tags) {
-          plugin.tags.forEach(tag => tags.add(tag))
-        }
-      })
-    }
-    return Array.from(tags).sort()
+    plugins.value.forEach(plugin => plugin.tags.forEach(tag => tags.add(tag)))
+    return Array.from(tags).sort((a, b) => a.localeCompare(b, 'zh-CN'))
   })
 
-  const tagOptions = computed(() => 
-    allTags.value.map(tag => ({ label: tag, value: tag }))
-  )
+  const hasRegistryTags = computed(() => plugins.value.some(plugin => plugin.raw?.tags !== undefined))
+
+  const filterOptions = computed(() => {
+    if (hasRegistryTags.value && allTags.value.length > 0) {
+      return [
+        { label: '全部', value: 'all' },
+        ...allTags.value.map(tag => ({ label: tag, value: tag }))
+      ]
+    }
+
+    return [
+      { label: '全部', value: 'all' },
+      { label: '已收录', value: 'listed' },
+      { label: '可安装', value: 'installable' }
+    ]
+  })
+
+  const stats = computed(() => {
+    const authors = new Set(plugins.value.map(plugin => plugin.author).filter(Boolean))
+    const repos = plugins.value.filter(plugin => plugin.repo).length
+    const installable = plugins.value.filter(plugin => plugin.installable).length
+    return {
+      total: plugins.value.length,
+      authors: authors.size,
+      repos,
+      installable,
+      tags: allTags.value.length
+    }
+  })
 
   const filteredPlugins = computed(() => {
-    if (!plugins.value) return []
-    
-    let filtered = plugins.value.filter(plugin => {
-      const searchValue = searchQuery.value ? searchQuery.value.toLowerCase() : ''
-      if (!searchValue && !selectedTag.value) return true
-      
-      const matchesSearch = !searchValue || 
-        (plugin.name && plugin.name.toLowerCase().includes(searchValue)) ||
-        (plugin.display_name && plugin.display_name.toLowerCase().includes(searchValue)) ||
-        (plugin.id && plugin.id.toLowerCase().includes(searchValue)) ||
-        (plugin.desc && plugin.desc.toLowerCase().includes(searchValue)) ||
-        (plugin.author && plugin.author.toLowerCase().includes(searchValue))
-      
-      const matchesTag = !selectedTag.value || 
-        (Array.isArray(plugin.tags) && plugin.tags.includes(selectedTag.value))
-      
-      return matchesSearch && matchesTag
+    const keyword = searchQuery.value.trim().toLowerCase()
+    const filter = selectedTag.value || 'all'
+
+    const result = plugins.value.filter(plugin => {
+      const matchesKeyword = !keyword || [
+        plugin.name,
+        plugin.displayName,
+        plugin.description,
+        plugin.author,
+        plugin.repo
+      ].some(value => String(value || '').toLowerCase().includes(keyword))
+
+      const matchesFilter = filter === 'all'
+        || (filter === 'listed' && Boolean(plugin.repo))
+        || (filter === 'installable' && plugin.installable)
+        || plugin.tags.includes(filter)
+
+      return matchesKeyword && matchesFilter
     })
 
-    if (sortBy.value === 'stars') {
-      filtered.sort((a, b) => (b.stars || 0) - (a.stars || 0))
-    } else if (sortBy.value === 'updated') {
-      filtered.sort((a, b) => {
-        const dateA = a.updated_at ? new Date(a.updated_at) : new Date(0)
-        const dateB = b.updated_at ? new Date(b.updated_at) : new Date(0)
-        return dateB - dateA
-      })
-    } else if (sortBy.value === 'random') {
-      filtered.sort((a, b) => {
-        const ha = stableHash(a.id || a.name || '', randomSeed.value)
-        const hb = stableHash(b.id || b.name || '', randomSeed.value)
-        return ha - hb
-      })
-    } else {
-      filtered.sort((a, b) => {
-        const indexA = plugins.value.findIndex(p => (p.id || p.name) === (a.id || a.name))
-        const indexB = plugins.value.findIndex(p => (p.id || p.name) === (b.id || b.name))
-        return indexA - indexB
-      })
-    }
+    return [...result].sort((a, b) => {
+      if (sortBy.value === 'author') {
+        return a.author.localeCompare(b.author, 'zh-CN') || a.displayName.localeCompare(b.displayName, 'zh-CN')
+      }
 
-    return filtered
+      if (sortBy.value === 'updated') {
+        const dateA = a.updatedAtDate ? a.updatedAtDate.getTime() : 0
+        const dateB = b.updatedAtDate ? b.updatedAtDate.getTime() : 0
+        if (dateA !== dateB) return dateB - dateA
+        return a.displayName.localeCompare(b.displayName, 'zh-CN')
+      }
+
+      return a.displayName.localeCompare(b.displayName, 'zh-CN')
+    })
   })
 
-  const totalPages = computed(() => {
-    if (sortBy.value === 'random') {
-      return filteredPlugins.value.length > 0 ? 1 : 0
-    }
-    return Math.ceil(filteredPlugins.value.length / pageSize.value)
-  })
-
-  const paginatedPlugins = computed(() => {
-    if (sortBy.value === 'random') {
-      return filteredPlugins.value.slice(0, pageSize.value)
-    }
-    const start = (currentPage.value - 1) * pageSize.value
-    const end = start + pageSize.value
-    return filteredPlugins.value.slice(start, end)
-  })
-
-  async function loadPlugins() {
+  async function loadPlugins(url = registryUrl.value) {
     isLoading.value = true
-    try {
-      const response = await fetch('https://api.soulter.top/astrbot/plugins', { cache: 'no-store' })
-      const data = await response.json()
-      plugins.value = Object.entries(data).map(([keyName, details]) => {
-        const tags = details.tags ? 
-          (Array.isArray(details.tags) ? details.tags : [details.tags]) 
-          : []
-        const machineName = keyName
-        const displayName = details.display_name || details.name || machineName
+    error.value = ''
+    registryUrl.value = url || resolveRegistryUrl()
 
-        return {
-          ...details,
-          id: machineName,
-          name: displayName,          
-          display_name: displayName,  
-          tags
-        }
-      })
-    } catch (error) {
-      console.error('Error loading plugins:', error)
+    try {
+      const response = await fetch(registryUrl.value, { cache: 'no-store' })
+      if (!response.ok) {
+        throw new Error(`Registry request failed: HTTP ${response.status}`)
+      }
+
+      const payload = await response.json()
+      plugins.value = normalizeRegistryPayload(payload)
+    } catch (err) {
       plugins.value = []
+      error.value = err instanceof Error ? err.message : 'Registry 加载失败'
     } finally {
       isLoading.value = false
     }
@@ -145,55 +124,36 @@ export const usePluginStore = defineStore('plugins', () => {
   }
 
   function setSearchQuery(query) {
-    searchQuery.value = query
+    searchQuery.value = query || ''
   }
 
   function setSelectedTag(tag) {
-    selectedTag.value = tag
-  }
-
-  function setCurrentPage(page) {
-    currentPage.value = page
+    selectedTag.value = tag || 'all'
   }
 
   function setSortBy(value) {
-    sortBy.value = value
-    if (value === 'random') {
-      randomSeed.value = Math.random()
-    }
-    currentPage.value = 1
-  }
-
-  function refreshRandomOrder() {
-    if (sortBy.value === 'random') {
-      randomSeed.value = Math.random()
-    }
+    sortBy.value = value || 'name'
   }
 
   return {
-    // 状态
     plugins,
     searchQuery,
     selectedTag,
-    currentPage,
-    isDarkMode,
     sortBy,
+    isDarkMode,
     isLoading,
-    randomSeed,
-    // 计算属性
+    error,
+    registryUrl,
     allTags,
-    tagOptions,
+    hasRegistryTags,
+    filterOptions,
+    stats,
     filteredPlugins,
-    totalPages,
-    paginatedPlugins,
-    // 动作
     loadPlugins,
     setDarkMode,
     setSearchQuery,
     setSelectedTag,
-    setCurrentPage,
     setSortBy,
-    toggleTheme,
-    refreshRandomOrder
+    toggleTheme
   }
 })

@@ -1,325 +1,161 @@
 <template>
-  <n-layout class="main-layout">
-    <app-header
-      v-model="isDarkMode"
-      v-model:search-query="searchQuery"
-      v-model:selected-tag="selectedTag"
-      v-model:current-page="currentPage"
-      v-model:sort-by="sortBy"
-      :tag-options="tagOptions"
-      :total-pages="totalPages"
-    />
-    <div class="top-pagination-wrapper">
-      <app-pagination
-        v-if="totalPages > 1"
-        v-model="currentPage"
-        :total-pages="totalPages"
-        class="top-pagination"
-      />
-    </div>
+  <div class="market-page">
+    <app-header v-model="isDarkMode" />
 
-    <!-- 随机排序时的工具条 -->
-    <div v-if="sortBy === 'random'" class="grid-toolbar">
-      <div class="grid-toolbar-inner">
-        <span class="toolbar-tip">随机推荐</span>
-        <n-button size="small" tertiary @click="refreshRandomOrder">
-          <template #icon>
-                         <n-icon><sync-outline /></n-icon>
-          </template>
-          换一换
-        </n-button>
-      </div>
-    </div>
+    <main class="discussion-shell market-shell">
+      <section class="discussion-hero market-hero">
+        <div>
+          <p class="eyebrow">SHINSEKAI SYSTEM / 插件市场</p>
+          <h1>浏览、安装、提交和维护 Shinsekai 插件。</h1>
+          <p class="market-hero__lead">
+            从公开 registry 读取插件索引，当前只提供前台浏览体验，不接密钥、不上传包体、不实现真实安装 API。
+          </p>
+        </div>
+        <div class="market-hero__actions">
+          <submit-plugin-button />
+          <n-button secondary tag="a" :href="registryUrl" target="_blank" rel="noreferrer">查看 registry JSON</n-button>
+        </div>
+      </section>
 
-    <main class="plugins-grid">
-      <!-- 加载状态 -->
-      <div v-if="isLoading" class="loading-container">
-        <div class="custom-loading">
-          <div class="loading-dots">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
+      <section class="market-layout">
+        <div class="discussion-panel market-main-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">PLUGIN INDEX</p>
+              <h2>插件列表</h2>
+            </div>
+            <span class="panel-count">{{ filteredPlugins.length }} / {{ stats.total }}</span>
           </div>
-          <div class="loading-text">正在加载插件数据</div>
+
+          <search-toolbar
+            v-model:search-query="searchQuery"
+            v-model:selected-tag="selectedTag"
+            v-model:sort-by="sortBy"
+            :filter-options="filterOptions"
+          />
+
+          <div v-if="isLoading" class="state-card">
+            <div class="loading-orbit" />
+            <strong>正在连接 registry...</strong>
+            <span>{{ registryUrl }}</span>
+          </div>
+
+          <div v-else-if="error" class="state-card state-card--error">
+            <strong>Registry 加载失败</strong>
+            <span>{{ error }}</span>
+            <n-button size="small" secondary @click="loadPlugins()">重试</n-button>
+          </div>
+
+          <div v-else-if="filteredPlugins.length === 0" class="state-card">
+            <strong>没有找到插件</strong>
+            <span v-if="plugins.length === 0">registry 当前为空，或者返回了空数组。</span>
+            <span v-else>试试清空搜索词或切换筛选条件。</span>
+            <n-button size="small" secondary @click="clearFilters">清空筛选</n-button>
+          </div>
+
+          <div v-else class="plugin-list">
+            <plugin-card
+              v-for="plugin in filteredPlugins"
+              :key="plugin.id"
+              :plugin="plugin"
+              @select="openDetails"
+            />
+          </div>
         </div>
-      </div>
-      
-      <!-- 空状态提示 -->
-      <div v-else-if="!isLoading && filteredPlugins.length === 0" class="empty-state">
-        <div class="empty-icon">
-          <n-icon size="48" :component="SearchOutline" />
-        </div>
-        <h3 class="empty-title">没有找到相关插件哦</h3>
-        <p class="empty-description">
-          <span v-if="searchQuery || selectedTag">
-            试试调整搜索内容呢
-          </span>
-          <span v-else>
-            当前没有可用的插件数据
-          </span>
-        </p>
-      </div>
-      
-      <!-- 插件卡片 -->
-      <template v-else>
-        <plugin-card
-          v-for="(plugin, index) in paginatedPlugins"
-          :key="`${plugin.id || plugin.name}-${filterKey}-${randomSeed}`"
-          :plugin="plugin"
-          :index="index"
-          :seed="randomSeed"
-        />
-      </template>
+
+        <aside class="market-sidebar">
+          <section class="discussion-panel sidebar-card">
+            <p class="discussion-panel-title">分类</p>
+            <button
+              v-for="option in filterOptions"
+              :key="option.value"
+              type="button"
+              class="sidebar-filter"
+              :class="{ active: selectedTag === option.value }"
+              @click="selectedTag = option.value"
+            >
+              <span>{{ option.label }}</span>
+              <small>{{ countForFilter(option.value) }}</small>
+            </button>
+          </section>
+
+          <section class="discussion-panel sidebar-card">
+            <p class="discussion-panel-title">公告</p>
+            <ul class="sidebar-list">
+              <li>当前为前台壳：不做后端、上传、登录或付费。</li>
+              <li>插件数据来自公开 registry JSON。</li>
+              <li>缺失未来字段时 UI 会自动降级。</li>
+            </ul>
+          </section>
+
+          <section class="discussion-panel sidebar-card">
+            <p class="discussion-panel-title">统计</p>
+            <div class="stats-grid">
+              <div><strong>{{ stats.total }}</strong><span>已收录</span></div>
+              <div><strong>{{ stats.authors }}</strong><span>作者</span></div>
+              <div><strong>{{ stats.repos }}</strong><span>仓库</span></div>
+              <div><strong>{{ stats.installable }}</strong><span>可安装</span></div>
+            </div>
+          </section>
+        </aside>
+      </section>
     </main>
-    <div class="bottom-pagination-wrapper">
-      <app-pagination
-        v-if="totalPages > 1"
-        v-model="currentPage"
-        :total-pages="totalPages"
-      />
-    </div>
+
+    <plugin-details v-model:show="showDetails" :plugin="selectedPlugin" />
     <app-footer />
-  </n-layout>
+  </div>
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { NLayout, NSpin, NIcon, NButton } from 'naive-ui'
-import { SearchOutline, SyncOutline } from '@vicons/ionicons5'
+import { NButton } from 'naive-ui'
 import AppHeader from '../components/AppHeader.vue'
-import PluginCard from '../components/PluginCard.vue'
-import AppPagination from '../components/AppPagination.vue'
 import AppFooter from '../components/AppFooter.vue'
+import PluginCard from '../components/PluginCard.vue'
+import PluginDetails from '../components/PluginDetails.vue'
+import SearchToolbar from '../components/SearchToolbar.vue'
+import SubmitPluginButton from '../components/SubmitPluginButton.vue'
 import { usePluginStore } from '../stores/plugins'
 
 const store = usePluginStore()
-const { 
-  isDarkMode,
+const {
+  plugins,
+  filteredPlugins,
+  filterOptions,
   searchQuery,
   selectedTag,
-  currentPage,
   sortBy,
-  tagOptions,
-  totalPages,
-  paginatedPlugins,
+  isDarkMode,
   isLoading,
-  filteredPlugins,
-  randomSeed
+  error,
+  registryUrl,
+  stats
 } = storeToRefs(store)
+const { loadPlugins } = store
 
-const filterKey = computed(() => {
-  return `${searchQuery.value}-${selectedTag.value}-${sortBy.value}-${currentPage.value}`
-})
+const selectedPlugin = ref(null)
+const showDetails = ref(false)
 
-const { refreshRandomOrder } = store
+function openDetails(plugin) {
+  selectedPlugin.value = plugin
+  showDetails.value = true
+}
+
+function clearFilters() {
+  searchQuery.value = ''
+  selectedTag.value = 'all'
+  sortBy.value = 'name'
+}
+
+function countForFilter(value) {
+  if (value === 'all') return plugins.value.length
+  if (value === 'listed') return plugins.value.filter(plugin => plugin.repo).length
+  if (value === 'installable') return plugins.value.filter(plugin => plugin.installable).length
+  return plugins.value.filter(plugin => plugin.tags.includes(value)).length
+}
+
 onMounted(() => {
-  store.loadPlugins()
+  loadPlugins()
 })
 </script>
-
-<style scoped>
-.main-layout {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.top-pagination-wrapper,
-.bottom-pagination-wrapper {
-  min-height: 48px; 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.grid-toolbar {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-.grid-toolbar-inner {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 12px;
-  padding: 4px 0 8px;
-}
-.toolbar-tip {
-  color: var(--text-tertiary);
-  font-size: 13px;
-}
-
-  .plugins-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-    max-width: 1400px;
-    gap: 24px;
-    padding: 20px;
-    margin: 0 auto;
-    animation: gridAppear 0.3s ease-out;
-    animation-delay: 0.7s;
-    animation-fill-mode: backwards;
-    align-content: start;  
-    align-items: start;   
-  }
-
-@keyframes gridAppear {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* 平板和中等屏幕 */
-@media (max-width: 1024px) and (min-width: 769px) {
-  .plugins-grid {
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 20px;
-    padding: 18px;
-  }
-}
-
-/* 小平板屏幕 */
-@media (max-width: 768px) and (min-width: 481px) {
-  .plugins-grid {
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 18px;
-    padding: 16px;
-  }
-}
-
-/* 手机屏幕 */
-@media (max-width: 480px) {
-  .plugins-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 16px;
-  }
-}
-
-.plugins-grid > * {
-  max-width: 500px;
-  justify-self: center;
-}
-
-.loading-container {
-  grid-column: 1 / -1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 60vh;
-  padding-top: 0;
-}
-
-.custom-loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-}
-
-.loading-dots {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--primary-color);
-  animation: dotPulse 1.4s ease-in-out infinite both;
-}
-
-.dot:nth-child(1) {
-  animation-delay: -0.32s;
-}
-
-.dot:nth-child(2) {
-  animation-delay: -0.16s;
-}
-
-.dot:nth-child(3) {
-  animation-delay: 0s;
-}
-
-@keyframes dotPulse {
-  0%, 80%, 100% {
-    transform: scale(0.6);
-    opacity: 0.4;
-  }
-  40% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.loading-text {
-  font-size: 16px;
-  color: var(--text-secondary);
-  font-weight: 500;
-  opacity: 0.8;
-  animation: fadeInOut 2s ease-in-out infinite;
-}
-
-@keyframes fadeInOut {
-  0%, 100% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 0.9;
-  }
-}
-
-.loading-container :deep(.n-spin) {
-  will-change: transform;
-  transform: translateZ(0); 
-}
-
-.loading-container :deep(.n-spin-icon) {
-  animation-timing-function: linear !important;
-  animation-duration: 1s !important; 
-  will-change: transform;
-  transform: translateZ(0); 
-}
-
-.loading-container :deep(.n-spin-body) {
-  will-change: auto;
-}
-
-.empty-state {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  min-height: 300px;
-  padding-top: 80px;
-  text-align: center;
-  color: var(--text-color-2);
-}
-
-.empty-icon {
-  margin-bottom: 16px;
-  opacity: 0.6;
-  color: var(--text-color-3);
-}
-
-.empty-title {
-  margin: 0 0 8px 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text-color-1);
-}
-
-.empty-description {
-  margin: 0;
-  font-size: 14px;
-  color: var(--text-color-2);
-  opacity: 0.8;
-}
-</style>

@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [
     vue(),
     sitemap({
-      hostname: process.env.VITE_SITE_URL || 'https://plugins.astrbot.app',
+      hostname: process.env.VITE_SITE_URL || 'https://plugins.end0rph1n.icu',
       dynamicRoutes: ['/submit'],
       externalSitemaps,
       generateRobotsTxt: true,
@@ -27,6 +27,7 @@ export default defineConfig({
   },
   server: {
     host: '0.0.0.0',
-    port: 3000
+    port: 3000,
+    allowedHosts: ['plugins.end0rph1n.icu']
   }
 })
