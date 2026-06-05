@@ -49,6 +49,7 @@ function parseDate(value) {
 
 export function normalizePlugin(raw, index = 0) {
   const source = raw && typeof raw === 'object' ? raw : {}
+  const packageInfo = source.package && typeof source.package === 'object' ? source.package : {}
   const name = asString(source.name, `plugin-${index + 1}`)
   const displayName = asString(source.display_name, name)
   const repo = asString(source.repo)
@@ -57,7 +58,11 @@ export function normalizePlugin(raw, index = 0) {
   const updatedAtDate = parseDate(source.updated_at)
   const tags = normalizeTags(source.tags)
   const description = asString(source.description || source.desc, '这个插件还没有提供描述。')
+  const shortDescription = asString(source.short_description || source.short_desc || source.desc, description)
   const version = asString(source.version, '未标注')
+  const downloadUrl = asString(source.download_url || packageInfo.url)
+  const sha256 = asString(source.sha256 || packageInfo.sha256)
+  const size = source.size ?? packageInfo.size ?? null
 
   return {
     id: asString(source.id, name || `plugin-${index + 1}`),
@@ -70,22 +75,29 @@ export function normalizePlugin(raw, index = 0) {
     repoPath,
     description,
     desc: description,
+    shortDescription,
+    short_description: shortDescription,
     entry: asString(source.entry),
     version,
     shinsekaiVersion: asString(source.shinsekai_version),
-    downloadUrl: asString(source.download_url),
-    sha256: asString(source.sha256),
+    downloadUrl,
+    sha256,
     commitSha: asString(source.commit_sha),
-    size: source.size ?? null,
+    size,
     updatedAt: asString(source.updated_at),
     updatedAtDate,
     tags,
     logo: asString(source.logo),
     stars: asNumber(source.stars ?? source.stargazers_count),
     forks: asNumber(source.forks ?? source.forks_count),
+    packageSource: asString(packageInfo.source || (downloadUrl ? 'r2' : '')),
+    packageUrl: asString(packageInfo.url || downloadUrl),
+    packageSha256: asString(packageInfo.sha256 || sha256),
+    packageSize: packageInfo.size ?? size,
+    packageR2Key: asString(packageInfo.r2_key || packageInfo.r2Key),
     repoUpdatedAt: '',
     repoUpdatedAtDate: null,
-    installable: Boolean(source.entry || source.download_url || source.repo),
+    installable: Boolean(source.entry || downloadUrl || source.repo),
     raw: source
   }
 }
