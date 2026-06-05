@@ -4,7 +4,7 @@
 
     <main class="market-shell">
       <section class="market-hero">
-        <p class="eyebrow">SHINSEKAI RESOURCE STATION</p>
+        <p class="eyebrow">SHINSEKAI COMMUNITY</p>
         <h1>Shinsekai 插件市场</h1>
         <p class="market-hero__lead">
           浏览 Shinsekai 插件、查看仓库与版本信息，并从公开 registry 同步插件索引。
@@ -15,47 +15,27 @@
           v-model:selected-tag="selectedTag"
           :filter-options="filterOptions"
         />
-
-        <div class="market-hero__actions">
-          <submit-plugin-button />
-          <n-button secondary tag="a" :href="registryUrl" target="_blank" rel="noreferrer">查看 registry JSON</n-button>
-        </div>
-      </section>
-
-      <section class="market-stats" aria-label="插件市场统计">
-        <div>
-          <strong>{{ stats.total }}</strong>
-          <span>全部插件</span>
-        </div>
-        <div>
-          <strong>{{ stats.authors }}</strong>
-          <span>作者</span>
-        </div>
-        <div>
-          <strong>{{ stats.repos }}</strong>
-          <span>仓库</span>
-        </div>
-        <div>
-          <strong>{{ stats.installable }}</strong>
-          <span>可安装</span>
-        </div>
       </section>
 
       <section class="market-board">
         <div class="market-board__head">
           <div>
             <h2>所有插件({{ filteredPlugins.length }})</h2>
-            <p>来自公开 registry 的插件索引。</p>
+            <p>来自公开 registry 的插件索引，点击卡片查看完整字段。</p>
           </div>
 
           <div class="market-board__tools">
-            <button class="icon-button" type="button" title="刷新插件索引" @click="loadPlugins()">↻</button>
+            <button class="icon-button" type="button" title="刷新插件索引" aria-label="刷新插件索引" @click="loadPlugins()">
+              <refresh-cw :size="17" />
+            </button>
             <label class="sort-select">
+              <sliders-horizontal :size="15" />
               <span>排序</span>
               <select :value="sortBy" @change="sortBy = $event.target.value">
                 <option value="recommended">默认排序</option>
                 <option value="name">名称</option>
                 <option value="author">作者</option>
+                <option value="stars">Star 数</option>
                 <option value="updated">更新时间</option>
                 <option value="repo">仓库优先</option>
               </select>
@@ -120,12 +100,12 @@
 import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { NButton } from 'naive-ui'
+import { RefreshCw, SlidersHorizontal } from '@lucide/vue'
 import AppHeader from '../components/AppHeader.vue'
 import AppFooter from '../components/AppFooter.vue'
 import PluginCard from '../components/PluginCard.vue'
 import PluginDetails from '../components/PluginDetails.vue'
 import SearchToolbar from '../components/SearchToolbar.vue'
-import SubmitPluginButton from '../components/SubmitPluginButton.vue'
 import { usePluginStore } from '../stores/plugins'
 
 const store = usePluginStore()
@@ -142,8 +122,7 @@ const {
   isDarkMode,
   isLoading,
   error,
-  registryUrl,
-  stats
+  registryUrl
 } = storeToRefs(store)
 const { loadPlugins, setPage } = store
 

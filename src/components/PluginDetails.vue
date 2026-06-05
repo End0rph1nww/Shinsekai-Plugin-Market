@@ -51,7 +51,7 @@
         <div class="plugin-detail__actions">
           <n-button secondary @click="copyInstallInfo">复制安装信息</n-button>
           <n-button v-if="plugin.repoUrl" secondary tag="a" :href="plugin.repoUrl" target="_blank" rel="noreferrer">GitHub 仓库</n-button>
-          <n-button type="primary" tag="a" href="https://github.com/RachelForster/Shinsekai-Plugin-Registry/issues/new" target="_blank" rel="noreferrer">提交插件</n-button>
+          <n-button type="primary" tag="a" :href="submitUrl" target="_blank" rel="noreferrer">提交插件</n-button>
         </div>
       </template>
     </n-drawer-content>
@@ -61,7 +61,7 @@
 <script setup>
 import { computed } from 'vue'
 import { NButton, NDrawer, NDrawerContent, useMessage } from 'naive-ui'
-import { buildInstallInfo } from '../utils/pluginNormalizer'
+import { buildInstallInfo, SUBMIT_PLUGIN_URL } from '../utils/pluginNormalizer'
 
 const props = defineProps({
   show: Boolean,
@@ -70,6 +70,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:show'])
 const message = useMessage()
+const submitUrl = import.meta.env.VITE_SUBMIT_URL || SUBMIT_PLUGIN_URL
 
 const visible = computed({
   get: () => props.show,

@@ -11,9 +11,9 @@
       <button v-if="searchQuery" type="button" @click="emit('update:searchQuery', '')">清除</button>
     </label>
 
-    <div class="market-filter-row" aria-label="插件筛选">
+    <div v-if="visibleFilterOptions.length > 0" class="market-filter-row" aria-label="插件筛选">
       <button
-        v-for="option in filterOptions"
+        v-for="option in visibleFilterOptions"
         :key="option.value"
         type="button"
         class="market-filter-chip"
@@ -27,10 +27,11 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { NIcon } from 'naive-ui'
 import { SearchOutline } from '@vicons/ionicons5'
 
-defineProps({
+const props = defineProps({
   searchQuery: {
     type: String,
     default: ''
@@ -46,4 +47,8 @@ defineProps({
 })
 
 const emit = defineEmits(['update:searchQuery', 'update:selectedTag'])
+
+const visibleFilterOptions = computed(() => {
+  return props.filterOptions.filter(option => option.value !== 'all')
+})
 </script>

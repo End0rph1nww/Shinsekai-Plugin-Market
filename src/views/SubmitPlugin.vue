@@ -8,7 +8,7 @@
         <p class="market-hero__lead">
           当前市场不提供登录和上传服务。插件信息通过公开 registry issue 提交，由维护者审核后合并。
         </p>
-        <n-button type="primary" tag="a" href="https://github.com/RachelForster/Shinsekai-Plugin-Registry/issues/new" target="_blank" rel="noreferrer">
+        <n-button type="primary" tag="a" :href="submitUrl" target="_blank" rel="noreferrer">
           打开提交 Issue
         </n-button>
       </section>
@@ -50,10 +50,12 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { NButton } from 'naive-ui'
+import { SUBMIT_PLUGIN_URL } from '../utils/pluginNormalizer'
 import AppHeader from '../components/AppHeader.vue'
 import AppFooter from '../components/AppFooter.vue'
 import { usePluginStore } from '../stores/plugins'
 
 const store = usePluginStore()
 const { isDarkMode } = storeToRefs(store)
+const submitUrl = import.meta.env.VITE_SUBMIT_URL || SUBMIT_PLUGIN_URL
 </script>

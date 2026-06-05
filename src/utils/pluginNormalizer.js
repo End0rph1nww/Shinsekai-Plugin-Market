@@ -1,11 +1,14 @@
-export const DEFAULT_REGISTRY_URL = 'https://raw.githubusercontent.com/End0rph1nww/Shinsekai-Plugin-Registry/main/plugins.json'
-export const UPSTREAM_REGISTRY_URL = 'https://raw.githubusercontent.com/RachelForster/Shinsekai-Plugin-Registry/main/plugins.json'
+export const DEFAULT_REGISTRY_URL = 'https://raw.githubusercontent.com/RachelForster/Shinsekai-Plugin-Registry/main/plugins.json'
 export const SUBMIT_PLUGIN_URL = 'https://github.com/RachelForster/Shinsekai-Plugin-Registry/issues/new'
-export const TEST_REGISTRY_REPO_URL = 'https://github.com/End0rph1nww/Shinsekai-Plugin-Registry'
 
 function asString(value, fallback = '') {
   if (value === null || value === undefined) return fallback
   return String(value).trim()
+}
+
+function asNumber(value, fallback = 0) {
+  const number = Number(value)
+  return Number.isFinite(number) ? number : fallback
 }
 
 function normalizeRepo(repo) {
@@ -15,14 +18,26 @@ function normalizeRepo(repo) {
   return `https://github.com/${value.replace(/^github\.com\//, '')}`
 }
 
-function normalizeTags(tags, plugin) {
+function normalizeRepoPath(repo) {
+  const value = asString(repo)
+  if (!value) return ''
+
+  try {
+    if (value.startsWith('http://') || value.startsWith('https://')) {
+      const url = new URL(value)
+      return url.hostname === 'github.com' ? url.pathname.replace(/^\//, '').replace(/\.git$/, '') : ''
+    }
+  } catch (_) {
+    return ''
+  }
+
+  return value.replace(/^github\.com\//, '').replace(/^\//, '').replace(/\.git$/, '')
+}
+
+function normalizeTags(tags) {
   if (Array.isArray(tags)) return tags.map(tag => asString(tag)).filter(Boolean)
   if (typeof tags === 'string') return tags.split(/[,，、\s]+/).map(tag => tag.trim()).filter(Boolean)
-
-  const fallback = []
-  if (plugin?.entry || plugin?.download_url) fallback.push('可安装')
-  if (plugin?.repo) fallback.push('已收录')
-  return fallback
+  return []
 }
 
 function parseDate(value) {
@@ -38,8 +53,9 @@ export function normalizePlugin(raw, index = 0) {
   const displayName = asString(source.display_name, name)
   const repo = asString(source.repo)
   const repoUrl = normalizeRepo(repo)
+  const repoPath = normalizeRepoPath(repo)
   const updatedAtDate = parseDate(source.updated_at)
-  const tags = normalizeTags(source.tags, source)
+  const tags = normalizeTags(source.tags)
   const description = asString(source.description || source.desc, '这个插件还没有提供描述。')
   const version = asString(source.version, '未标注')
 
@@ -51,6 +67,7 @@ export function normalizePlugin(raw, index = 0) {
     author: asString(source.author, 'Unknown'),
     repo,
     repoUrl,
+    repoPath,
     description,
     desc: description,
     entry: asString(source.entry),
@@ -64,6 +81,10 @@ export function normalizePlugin(raw, index = 0) {
     updatedAtDate,
     tags,
     logo: asString(source.logo),
+    stars: asNumber(source.stars ?? source.stargazers_count),
+    forks: asNumber(source.forks ?? source.forks_count),
+    repoUpdatedAt: '',
+    repoUpdatedAtDate: null,
     installable: Boolean(source.entry || source.download_url || source.repo),
     raw: source
   }

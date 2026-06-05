@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [
     vue(),
     sitemap({
-      hostname: process.env.VITE_SITE_URL || 'https://plugins.end0rph1n.icu',
+      hostname: process.env.VITE_SITE_URL || 'https://localhost:3000',
       dynamicRoutes: ['/submit'],
       externalSitemaps,
       generateRobotsTxt: true,
@@ -28,6 +28,11 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 3000,
-    allowedHosts: ['plugins.end0rph1n.icu']
+    allowedHosts: true,
+    hmr: {
+      protocol: 'ws',
+      host: 'localhost',
+      clientPort: 3000
+    }
   }
 })

@@ -20,8 +20,9 @@ Based on `AstrBotDevs/Astrbot_Plugins_Market`, modified for Shinsekai Plugin Mar
 
 - 插件列表
 - 搜索：`name` / `description` / `author` / `repo`
-- 标签和基础状态筛选
-- 排序：默认 / 名称 / 作者 / 更新时间 / 仓库优先
+- 标签筛选
+- 排序：默认 / 名称 / 作者 / Star 数 / 更新时间 / 仓库优先
+- GitHub Star / Fork 自动拉取
 - 分页浏览
 - 插件详情抽屉
 - GitHub 仓库跳转
@@ -30,25 +31,22 @@ Based on `AstrBotDevs/Astrbot_Plugins_Market`, modified for Shinsekai Plugin Mar
 - loading / error / empty 状态
 - 移动端适配
 
-## Data Source
+## Configuration
 
-通过 Vite 环境变量配置 registry：
+复制 `.env.example` 为 `.env` 并按需修改：
 
 ```bash
-VITE_PLUGIN_REGISTRY_URL=https://raw.githubusercontent.com/End0rph1nww/Shinsekai-Plugin-Registry/main/plugins.json
+cp .env.example .env
 ```
 
-默认值：
+可用环境变量：
 
-```text
-https://raw.githubusercontent.com/End0rph1nww/Shinsekai-Plugin-Registry/main/plugins.json
-```
-
-上游 registry 可选地址：
-
-```text
-https://raw.githubusercontent.com/RachelForster/Shinsekai-Plugin-Registry/main/plugins.json
-```
+| 变量 | 说明 | 默认值 |
+|------|------|--------|
+| `VITE_PLUGIN_REGISTRY_URL` | 插件 registry JSON 地址 | 上游 registry |
+| `VITE_SUBMIT_URL` | 提交插件跳转的 issue URL | 上游 registry issues/new |
+| `VITE_SITE_URL` | Shinsekai 主站地址 | `/` |
+| `VITE_REGISTRY_FORK_URL` | Registry fork 地址（页脚显示） | 不显示 |
 
 ## Registry Format
 
@@ -67,63 +65,27 @@ https://raw.githubusercontent.com/RachelForster/Shinsekai-Plugin-Registry/main/p
 预留未来字段：
 
 ```text
-display_name
-version
-shinsekai_version
-download_url
-sha256
-commit_sha
-size
-updated_at
-tags
-logo
+display_name, version, shinsekai_version, download_url,
+sha256, commit_sha, size, updated_at, tags, logo, stars
 ```
 
-字段不存在时 UI 会降级显示，不会因为 registry 缺字段而崩溃。
+字段不存在时 UI 会降级显示，不会崩溃。
 
 ## Development
 
-安装依赖：
-
 ```bash
 npm ci
-```
-
-启动开发服务器：
-
-```bash
 npm run dev -- --host 0.0.0.0
 ```
 
 ## Build
 
-生产构建：
-
 ```bash
 npm run build
-```
-
-预览构建结果：
-
-```bash
 npm run preview -- --host 0.0.0.0
 ```
 
-## Submission Flow
-
-“提交插件”按钮会跳转到上游 registry issue 页面：
-
-```text
-https://github.com/RachelForster/Shinsekai-Plugin-Registry/issues/new
-```
-
-测试 fork：
-
-```text
-https://github.com/End0rph1nww/Shinsekai-Plugin-Registry
-```
-
-## License And Attribution
+## License and Attribution
 
 This project is based on `AstrBotDevs/Astrbot_Plugins_Market` and keeps the original GPL-3.0 license.
 
