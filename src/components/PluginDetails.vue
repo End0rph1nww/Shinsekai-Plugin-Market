@@ -4,8 +4,7 @@
       <template #header>
         <div class="plugin-detail__header">
           <div class="plugin-detail__logo">
-            <img v-if="plugin.logo" :src="plugin.logo" :alt="`${plugin.displayName} logo`" />
-            <span v-else>{{ initials }}</span>
+            <img :src="plugin.logo || '/plugin-market-logo.png'" :alt="`${plugin.displayName} logo`" />
           </div>
           <div>
             <p class="eyebrow">PLUGIN DETAIL</p>
@@ -51,7 +50,6 @@
         <div class="plugin-detail__actions">
           <n-button secondary @click="copyInstallInfo">复制安装信息</n-button>
           <n-button v-if="plugin.repoUrl" secondary tag="a" :href="plugin.repoUrl" target="_blank" rel="noreferrer">GitHub 仓库</n-button>
-          <n-button type="primary" tag="a" :href="submitUrl" target="_blank" rel="noreferrer">提交插件</n-button>
         </div>
       </template>
     </n-drawer-content>

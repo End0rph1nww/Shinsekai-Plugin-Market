@@ -2,8 +2,7 @@
   <article class="plugin-card" tabindex="0" @click="emit('select', plugin)" @keydown.enter="emit('select', plugin)">
     <div class="plugin-card__main">
       <div class="plugin-card__logo" aria-hidden="true">
-        <img v-if="plugin.logo" :src="plugin.logo" :alt="`${plugin.displayName} logo`" />
-        <span v-else>{{ initials }}</span>
+        <img :src="plugin.logo || '/plugin-market-logo.png'" :alt="`${plugin.displayName} logo`" />
       </div>
 
       <div class="plugin-card__content">
