@@ -366,6 +366,9 @@
 .icon-button {
   width: 2.35rem;
   height: 2.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   color: var(--sys-purple);
   font-size: 1.05rem;

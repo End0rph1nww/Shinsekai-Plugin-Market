@@ -11,18 +11,6 @@
       <button v-if="searchQuery" type="button" @click="emit('update:searchQuery', '')">清除</button>
     </label>
 
-    <div v-if="visibleFilterOptions.length > 0" class="market-filter-row" aria-label="插件筛选">
-      <button
-        v-for="option in visibleFilterOptions"
-        :key="option.value"
-        type="button"
-        class="market-filter-chip"
-        :class="{ active: selectedTag === option.value }"
-        @click="emit('update:selectedTag', option.value)"
-      >
-        {{ option.label }}
-      </button>
-    </div>
   </div>
 </template>
 

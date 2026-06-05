@@ -176,8 +176,11 @@ export const usePluginStore = defineStore('plugins', () => {
       const payload = await response.json()
       const normalizedPlugins = normalizeRegistryPayload(payload)
       plugins.value = normalizedPlugins
-      const hydratedPlugins = await Promise.all(normalizedPlugins.map(fetchGithubRepoStats))
-      plugins.value = hydratedPlugins
+      isLoading.value = false
+      Promise.all(normalizedPlugins.map(fetchGithubRepoStats))
+        .then(hydratedPlugins => { plugins.value = hydratedPlugins })
+        .catch(() => {})
+      return
     } catch (err) {
       plugins.value = []
       error.value = err instanceof Error ? err.message : 'Registry 加载失败'
