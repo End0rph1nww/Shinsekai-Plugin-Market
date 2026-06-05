@@ -10,7 +10,7 @@
           <h3>{{ plugin.displayName }}</h3>
         </div>
 
-        <p>{{ plugin.description }}</p>
+        <p>{{ plugin.shortDescription || plugin.description }}</p>
       </div>
     </div>
 
