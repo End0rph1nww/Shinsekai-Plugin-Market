@@ -1062,3 +1062,255 @@
   min-height: 2rem;
   padding-inline: 0.62rem;
 }
+
+.plugin-card__scan--passed {
+  color: #0f8a55 !important;
+}
+
+.plugin-card__scan--blocked {
+  color: #c2410c !important;
+}
+
+.plugin-card__scan--unknown {
+  color: var(--text-tertiary) !important;
+}
+
+.plugin-detail .detail-grid dd small {
+  display: block;
+  margin-top: 0.22rem;
+  color: var(--text-tertiary);
+  font-size: 0.72rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.scan-summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.18rem 0.55rem;
+  align-items: center;
+  border: 1px solid var(--border-base);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.52);
+  padding: 0.7rem 0.8rem;
+}
+
+.dark .scan-summary {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.scan-summary strong {
+  color: var(--text-primary);
+}
+
+.scan-summary span {
+  grid-column: 2;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+}
+
+.scan-summary--passed {
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.scan-summary--blocked {
+  border-color: rgba(249, 115, 22, 0.42);
+}
+
+.submit-hero {
+  padding-bottom: 1rem;
+}
+
+.submit-wizard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(23rem, 0.42fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.submit-wizard__form {
+  display: grid;
+  gap: 1rem;
+}
+
+.submit-panel {
+  border: 1px solid var(--border-base);
+  border-radius: 8px;
+  background: var(--sys-panel);
+  box-shadow: var(--shadow-sm);
+  padding: 1rem;
+}
+
+.submit-panel--sticky {
+  position: sticky;
+  top: 5.2rem;
+}
+
+.submit-panel__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.submit-panel__head h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.08rem;
+}
+
+.submit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.submit-field {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.submit-field--wide {
+  margin-top: 0.75rem;
+}
+
+.submit-field span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-primary);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.submit-field b {
+  color: var(--text-tertiary);
+  font-size: 0.75rem;
+}
+
+.submit-field input,
+.submit-field textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--border-base);
+  border-radius: 8px;
+  outline: 0;
+  background: rgba(255, 255, 255, 0.68);
+  color: var(--text-primary);
+  font: inherit;
+  padding: 0.68rem 0.75rem;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+}
+
+.dark .submit-field input,
+.dark .submit-field textarea {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.submit-field textarea {
+  resize: vertical;
+}
+
+.submit-field input:focus,
+.submit-field textarea:focus {
+  border-color: var(--sys-rose);
+  box-shadow: 0 0 0 3px rgba(232, 120, 154, 0.14);
+}
+
+.submit-field.invalid input,
+.submit-field.invalid textarea {
+  border-color: rgba(239, 68, 68, 0.66);
+}
+
+.submit-field small,
+.submit-errors p {
+  margin: 0;
+  color: #c2410c;
+  font-size: 0.76rem;
+}
+
+.submit-preview {
+  min-width: 0;
+}
+
+.submit-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  min-height: 2rem;
+  border: 1px solid var(--border-base);
+  border-radius: 8px;
+  padding: 0.18rem 0.58rem;
+  color: var(--text-secondary);
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+
+.submit-status.is-ready {
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #0f8a55;
+}
+
+.submit-status.is-blocked {
+  border-color: rgba(249, 115, 22, 0.42);
+  color: #c2410c;
+}
+
+.submit-json {
+  max-height: 28rem;
+  overflow: auto;
+  border: 1px solid var(--border-base);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.58);
+  color: var(--text-primary);
+  font-family: "Consolas", "Fira Code", monospace;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  margin: 0.8rem 0;
+  padding: 0.85rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.dark .submit-json {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.submit-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.55rem;
+}
+
+.submit-errors {
+  display: grid;
+  gap: 0.28rem;
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 980px) {
+  .submit-wizard {
+    grid-template-columns: 1fr;
+  }
+
+  .submit-panel--sticky {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .submit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .submit-actions {
+    justify-content: stretch;
+  }
+
+  .submit-actions .n-button {
+    flex: 1 1 auto;
+  }
+}

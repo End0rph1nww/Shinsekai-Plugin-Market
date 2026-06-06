@@ -17,6 +17,9 @@
     <div class="plugin-card__meta-panel">
       <span><user-round :size="14" />{{ plugin.author }}</span>
       <span><git-branch :size="14" />{{ versionLabel }}</span>
+      <span v-if="plugin.packageHasOfficialUrl"><archive :size="14" />{{ packageLabel }}</span>
+      <span v-if="plugin.packageSize"><hard-drive :size="14" />{{ packageSizeLabel }}</span>
+      <span :class="scanClass"><shield-check :size="14" />{{ scanLabel }}</span>
       <span><star :size="14" />{{ starLabel }}</span>
     </div>
 
@@ -49,7 +52,8 @@
 
 <script setup>
 import { computed } from 'vue'
-import { GitBranch, Star, Tag as TagIcon, UserRound } from '@lucide/vue'
+import { Archive, GitBranch, HardDrive, ShieldCheck, Star, Tag as TagIcon, UserRound } from '@lucide/vue'
+import { formatBytes } from '../utils/pluginNormalizer'
 
 const props = defineProps({
   plugin: {
@@ -60,12 +64,16 @@ const props = defineProps({
 
 const emit = defineEmits(['select'])
 
-const initials = computed(() => {
-  return (props.plugin.displayName || props.plugin.name || 'S').slice(0, 2).toUpperCase()
-})
-
 const versionLabel = computed(() => props.plugin.version && props.plugin.version !== '未标注' ? props.plugin.version : '未标注')
 const starLabel = computed(() => props.plugin.stars > 0 ? props.plugin.stars.toLocaleString() : '0')
+const packageLabel = computed(() => props.plugin.packageSource === 'r2' ? 'R2 包' : '安装包')
+const packageSizeLabel = computed(() => formatBytes(props.plugin.packageSize))
+const scanLabel = computed(() => {
+  if (props.plugin.scanState === 'passed') return '扫描通过'
+  if (props.plugin.scanState === 'blocked') return '扫描拦截'
+  return '未扫描'
+})
+const scanClass = computed(() => ['plugin-card__scan', `plugin-card__scan--${props.plugin.scanState || 'unknown'}`])
 const visibleTags = computed(() => props.plugin.tags.slice(0, 3))
 const extraTagCount = computed(() => Math.max(0, props.plugin.tags.length - visibleTags.value.length))
 </script>

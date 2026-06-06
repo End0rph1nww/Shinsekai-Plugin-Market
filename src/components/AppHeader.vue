@@ -22,7 +22,7 @@
       </nav>
 
       <div class="site-actions">
-        <n-button class="submit-nav-button" secondary size="small" tag="a" :href="submitUrl" target="_blank" rel="noreferrer">
+        <n-button class="submit-nav-button" secondary size="small" @click="goSubmit">
           <template #icon>
             <n-icon><send :size="15" /></n-icon>
           </template>
@@ -50,7 +50,7 @@
 import { NButton, NIcon, NSwitch } from 'naive-ui'
 import { MoonSharp, SunnySharp } from '@vicons/ionicons5'
 import { Database, Home, MessagesSquare, Send } from '@lucide/vue'
-import { SUBMIT_PLUGIN_URL } from '../utils/pluginNormalizer'
+import { useRouter } from 'vue-router'
 
 defineProps({
   modelValue: Boolean
@@ -59,7 +59,11 @@ defineProps({
 defineEmits(['update:modelValue'])
 
 const siteUrl = import.meta.env.VITE_SITE_URL || '/'
-const submitUrl = import.meta.env.VITE_SUBMIT_URL || SUBMIT_PLUGIN_URL
+const router = useRouter()
+
+function goSubmit() {
+  router.push({ name: 'SubmitPlugin' })
+}
 
 const railStyle = ({ checked }) => ({
   background: checked ? '#8f314f' : '#e8789a'

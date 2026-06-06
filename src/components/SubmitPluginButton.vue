@@ -2,10 +2,7 @@
   <n-button
     type="primary"
     size="medium"
-    tag="a"
-    href="https://github.com/RachelForster/Shinsekai-Plugin-Registry/issues/new"
-    target="_blank"
-    rel="noreferrer"
+    @click="router.push({ name: 'SubmitPlugin' })"
   >
     <template #icon>
       <n-icon><add-circle /></n-icon>
@@ -17,4 +14,7 @@
 <script setup>
 import { NButton, NIcon } from 'naive-ui'
 import { AddCircle } from '@vicons/ionicons5'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 </script>
