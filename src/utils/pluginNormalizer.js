@@ -4,6 +4,9 @@ export const DEFAULT_REGISTRY_FALLBACK_URLS = [RAW_REGISTRY_URL]
 export const SUBMIT_TEMPLATE = 'PLUGIN_PUBLISH.yml'
 export const SUBMIT_PLUGIN_INFO_FIELD = 'plugin-info'
 export const SUBMIT_PLUGIN_URL = `https://github.com/End0rph1nww/Shinsekai-Plugin-Registry/issues/new?template=${SUBMIT_TEMPLATE}`
+export const VERIFICATION_TEMPLATE = 'VERIFICATION_REQUEST.yml'
+export const VERIFICATION_INFO_FIELD = 'verification-info'
+export const VERIFICATION_REQUEST_URL = `https://github.com/End0rph1nww/Shinsekai-Plugin-Registry/issues/new?template=${VERIFICATION_TEMPLATE}`
 export const MAX_SUBMISSION_DESC_LENGTH = 200
 const GITHUB_SLUG_PART_RE = /^[A-Za-z0-9_.-]+$/
 
@@ -100,6 +103,54 @@ function normalizeScanState(secScan) {
   }
 }
 
+function normalizeReview(value) {
+  return value && typeof value === 'object' && !Array.isArray(value) ? value : {}
+}
+
+function normalizeTrustState(source) {
+  const review = normalizeReview(source.review)
+  const trustLevel = asString(source.trust_level || source.trustLevel || 'community').toLowerCase()
+  const verified = source.verified === true && trustLevel === 'verified'
+  if (verified) {
+    return {
+      label: 'Verified',
+      review,
+      state: 'verified',
+      summary: '已由 Shinsekai Registry 维护者人工验证。',
+      trustLevel: 'verified',
+      verified: true
+    }
+  }
+  if (trustLevel === 'verified_update_pending') {
+    return {
+      label: 'Pending Review',
+      review,
+      state: 'pending',
+      summary: '曾经通过人工验证，但当前包体、commit 或版本等待复审。',
+      trustLevel: 'verified_update_pending',
+      verified: false
+    }
+  }
+  if (trustLevel === 'blocked') {
+    return {
+      label: 'Blocked',
+      review,
+      state: 'blocked',
+      summary: '该插件已被 Shinsekai Registry 审核拦截。',
+      trustLevel: 'blocked',
+      verified: false
+    }
+  }
+  return {
+    label: 'Community',
+    review,
+    state: 'community',
+    summary: '社区插件：已通过基础 CI 分发检查，但尚未经过维护者人工验证。',
+    trustLevel: 'community',
+    verified: false
+  }
+}
+
 function registryEntries(payload) {
   if (Array.isArray(payload)) return payload.map((item, index) => [String(index), item])
   if (!payload || typeof payload !== 'object') throw new Error('Registry JSON must be an array or object')
@@ -132,6 +183,7 @@ export function normalizePlugin(raw, index = 0) {
   const packageSize = asOptionalNumber(packageInfo.size ?? size)
   const packageSource = asString(packageInfo.source || (packageUrl ? 'package' : ''))
   const scan = normalizeScanState(source.sec_scan)
+  const trust = normalizeTrustState(source)
 
   return {
     id: asString(source.id, name || `plugin-${index + 1}`),
@@ -168,10 +220,41 @@ export function normalizePlugin(raw, index = 0) {
     secScan: source.sec_scan && typeof source.sec_scan === 'object' ? source.sec_scan : null,
     scanState: scan.state,
     scanMessage: scan.message,
+    trustLevel: trust.trustLevel,
+    trustState: trust.state,
+    trustLabel: trust.label,
+    trustSummary: trust.summary,
+    verified: trust.verified,
+    review: trust.review,
     repoUpdatedAt: '',
     repoUpdatedAtDate: null,
     installable: Boolean(source.entry || packageUrl || source.repo),
     raw: source
+  }
+}
+
+export function buildVerificationRequestIssueUrl(plugin, baseUrl = VERIFICATION_REQUEST_URL) {
+  const source = plugin && typeof plugin === 'object' ? plugin : {}
+  const payload = Object.fromEntries(Object.entries({
+    plugin_name: asString(source.name || source.displayName),
+    repo: asString(source.repoUrl || normalizeRepo(source.repo)),
+    version: asString(source.version),
+    commit_sha: asString(source.commitSha || source.commit_sha),
+    package_sha256: asString(source.packageSha256 || source.sha256),
+    package_url: asString(source.packageUrl || source.downloadUrl || source.download_url),
+    reason: 'Request maintainer verification for this Shinsekai community plugin.'
+  }).filter(([, value]) => value))
+  const body = `\`\`\`json\n${JSON.stringify(payload, null, 2)}\n\`\`\`\n`
+
+  try {
+    const url = new URL(baseUrl)
+    if (!url.searchParams.get('template')) url.searchParams.set('template', VERIFICATION_TEMPLATE)
+    if (payload.plugin_name) url.searchParams.set('title', `[Verification] ${payload.plugin_name}`)
+    url.searchParams.delete('body')
+    url.searchParams.set(VERIFICATION_INFO_FIELD, body)
+    return url.toString()
+  } catch (_) {
+    return baseUrl
   }
 }
 

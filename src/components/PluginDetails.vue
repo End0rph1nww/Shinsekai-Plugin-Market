@@ -40,6 +40,23 @@
 
       <div class="plugin-detail__section">
         <h3>安全扫描</h3>
+        <div class="trust-summary" :class="`trust-summary--${plugin.trustState}`">
+          <shield-check :size="18" />
+          <strong>{{ plugin.trustLabel }}</strong>
+          <span>{{ trustSummary }}</span>
+          <n-button
+            v-if="canRequestVerification"
+            class="trust-summary__action"
+            size="small"
+            secondary
+            tag="a"
+            :href="verificationRequestUrl"
+            target="_blank"
+            rel="noreferrer"
+          >
+            申请人工验证
+          </n-button>
+        </div>
         <div class="scan-summary" :class="`scan-summary--${plugin.scanState}`">
           <shield-check :size="18" />
           <strong>{{ scanLabel }}</strong>
@@ -70,7 +87,7 @@
 import { computed } from 'vue'
 import { NButton, NDrawer, NDrawerContent, useMessage } from 'naive-ui'
 import { ShieldCheck } from '@lucide/vue'
-import { buildInstallInfo, compactHash, formatBytes } from '../utils/pluginNormalizer'
+import { buildInstallInfo, buildVerificationRequestIssueUrl, compactHash, formatBytes } from '../utils/pluginNormalizer'
 
 const props = defineProps({
   show: Boolean,
@@ -94,6 +111,14 @@ const sourceLabel = computed(() => {
 const packageSizeLabel = computed(() => formatBytes(props.plugin?.packageSize ?? props.plugin?.size))
 const compactCommitSha = computed(() => compactHash(props.plugin?.commitSha))
 const compactPackageSha = computed(() => compactHash(props.plugin?.packageSha256 || props.plugin?.sha256))
+const trustSummary = computed(() => {
+  if (!props.plugin) return ''
+  const review = props.plugin.review && typeof props.plugin.review === 'object' ? props.plugin.review : {}
+  const reviewMessage = review.notes || review.message || review.summary || ''
+  return props.plugin.trustSummary || reviewMessage || '社区插件：已通过基础 CI 分发检查，但尚未经过维护者人工验证。'
+})
+const canRequestVerification = computed(() => ['community', 'pending'].includes(props.plugin?.trustState))
+const verificationRequestUrl = computed(() => buildVerificationRequestIssueUrl(props.plugin))
 const scanLabel = computed(() => {
   if (props.plugin?.scanState === 'passed') return '扫描通过'
   if (props.plugin?.scanState === 'blocked') return '扫描拦截'
