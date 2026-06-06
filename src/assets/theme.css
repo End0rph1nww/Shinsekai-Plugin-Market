@@ -590,6 +590,37 @@
   flex: none;
 }
 
+.plugin-card__version {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  min-height: 1.35rem;
+  padding: 0.08rem 0.45rem;
+  border: 1px solid rgba(232, 120, 154, 0.3);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.56);
+  color: var(--text-tertiary);
+  font-size: 0.7rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.author-link {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.28rem;
+  color: var(--sys-purple-deep);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.author-link:hover {
+  color: var(--sys-rose-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .repo-link {
   min-height: 1.8rem;
   display: inline-flex;

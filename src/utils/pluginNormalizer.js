@@ -191,6 +191,8 @@ export function normalizePlugin(raw, index = 0) {
     displayName,
     display_name: displayName,
     author: asString(source.author, 'Unknown'),
+    socialLink: asString(source.social_link || source.socialLink),
+    social_link: asString(source.social_link || source.socialLink),
     repo,
     repoUrl,
     repoPath,
@@ -298,15 +300,17 @@ export function formatBytes(value) {
 
 export function normalizeSubmissionForm(form) {
   const tags = normalizeTags(form.tags).slice(0, 5)
-  return {
+  const payload = {
     display_name: asString(form.display_name),
     desc: asString(form.desc),
     author: asString(form.author),
     repo: asString(form.repo),
-    entry: asString(form.entry),
     tags,
     social_link: asString(form.social_link)
   }
+  const shinsekaiVersion = asString(form.shinsekai_version)
+  if (shinsekaiVersion) payload.shinsekai_version = shinsekaiVersion
+  return payload
 }
 
 export function buildSubmissionJson(form) {

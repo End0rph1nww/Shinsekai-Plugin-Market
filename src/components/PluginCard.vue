@@ -9,8 +9,9 @@
         <div class="plugin-card__title-row">
           <h3>{{ plugin.displayName }}</h3>
           <span :class="trustClass">
-            <shield-check :size="12" />{{ trustBadgeLabel }}
+            <component :is="trustBadgeIcon" :size="12" />{{ trustBadgeLabel }}
           </span>
+          <span class="plugin-card__version">{{ versionLabel }}</span>
         </div>
 
         <p>{{ plugin.shortDescription || plugin.description }}</p>
@@ -19,8 +20,17 @@
 
     <div class="plugin-card__meta-panel" aria-label="Plugin metadata">
       <div class="plugin-card__meta-line">
-        <span><user-round :size="13" />{{ plugin.author }}</span>
-        <span><git-branch :size="13" />{{ versionLabel }}</span>
+        <a
+          v-if="plugin.socialLink"
+          class="author-link"
+          :href="plugin.socialLink"
+          target="_blank"
+          rel="noreferrer"
+          @click.stop
+        >
+          <user-round :size="13" />{{ plugin.author }}
+        </a>
+        <span v-else><user-round :size="13" />{{ plugin.author }}</span>
         <span v-if="plugin.packageHasOfficialUrl"><archive :size="13" />{{ packageLabel }}</span>
         <span v-if="plugin.packageSize"><hard-drive :size="13" />{{ packageSizeLabel }}</span>
         <span><star :size="13" />{{ starLabel }}</span>
@@ -56,7 +66,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import { Archive, GitBranch, HardDrive, ShieldCheck, Star, Tag as TagIcon, UserRound } from '@lucide/vue'
+import { Archive, GitBranch, Globe2, HardDrive, ShieldCheck, Star, Tag as TagIcon, UserRound } from '@lucide/vue'
 import { formatBytes } from '../utils/pluginNormalizer'
 
 const props = defineProps({
@@ -74,6 +84,7 @@ const packageLabel = computed(() => props.plugin.packageSource === 'r2' ? 'R2 åŒ
 const packageSizeLabel = computed(() => formatBytes(props.plugin.packageSize))
 const trustBadgeState = computed(() => props.plugin.trustState === 'verified' && props.plugin.verified === true ? 'verified' : 'community')
 const trustBadgeLabel = computed(() => trustBadgeState.value === 'verified' ? 'Verified' : 'Community')
+const trustBadgeIcon = computed(() => trustBadgeState.value === 'verified' ? ShieldCheck : Globe2)
 const trustClass = computed(() => ['trust-badge', `trust-badge--${trustBadgeState.value}`])
 const visibleTags = computed(() => props.plugin.tags.slice(0, 3))
 const extraTagCount = computed(() => Math.max(0, props.plugin.tags.length - visibleTags.value.length))

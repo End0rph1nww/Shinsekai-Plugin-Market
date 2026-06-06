@@ -18,7 +18,21 @@
         <h3>基础信息</h3>
         <dl class="detail-grid">
           <div><dt>注册名</dt><dd>{{ plugin.name }}</dd></div>
-          <div><dt>作者</dt><dd>{{ plugin.author }}</dd></div>
+          <div>
+            <dt>作者</dt>
+            <dd>
+              <a
+                v-if="plugin.socialLink"
+                class="author-link"
+                :href="plugin.socialLink"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {{ plugin.author }}
+              </a>
+              <span v-else>{{ plugin.author }}</span>
+            </dd>
+          </div>
           <div><dt>版本</dt><dd>{{ plugin.version }}</dd></div>
           <div><dt>Shinsekai 版本</dt><dd>{{ plugin.shinsekaiVersion || '未标注' }}</dd></div>
           <div><dt>入口</dt><dd>{{ plugin.entry || '未标注' }}</dd></div>

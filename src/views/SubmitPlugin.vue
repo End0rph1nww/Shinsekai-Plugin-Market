@@ -43,7 +43,7 @@
           <div class="submit-panel">
             <div class="submit-panel__head">
               <p class="eyebrow">STEP 02</p>
-              <h2>仓库与入口</h2>
+              <h2>仓库信息</h2>
             </div>
 
             <label class="submit-field submit-field--wide" :class="{ invalid: fieldErrors.repo }">
@@ -52,13 +52,12 @@
               <small v-if="fieldErrors.repo">{{ fieldErrors.repo }}</small>
             </label>
 
-            <label class="submit-field submit-field--wide" :class="{ invalid: fieldErrors.entry }">
-              <span>插件入口</span>
-              <input v-model.trim="form.entry" type="text" placeholder="plugins.shinsekai_plugin.plugin:ShinsekaiPlugin" />
-              <small v-if="fieldErrors.entry">{{ fieldErrors.entry }}</small>
-            </label>
-
             <div class="submit-grid">
+              <label class="submit-field">
+                <span>支持 Shinsekai 版本（可选）</span>
+                <input v-model.trim="form.shinsekai_version" type="text" placeholder=">=0.2.0" />
+              </label>
+
               <label class="submit-field" :class="{ invalid: fieldErrors.tags }">
                 <span>标签</span>
                 <input v-model="form.tags" type="text" placeholder="shinsekai, example" />
@@ -66,8 +65,8 @@
               </label>
 
               <label class="submit-field">
-                <span>社交链接</span>
-                <input v-model.trim="form.social_link" type="url" placeholder="https://github.com/shinsekai" />
+                <span>社交链接（可选）</span>
+                <input v-model.trim="form.social_link" type="url" placeholder="你的 B 站、GitHub 主页或个人网站" />
               </label>
             </div>
           </div>
@@ -91,7 +90,7 @@
                   <template #icon>
                     <n-icon><external-link :size="15" /></n-icon>
                   </template>
-                  打开 Issue
+                  提交到 GitHub Issue
                 </n-button>
               </div>
             </div>
@@ -143,7 +142,7 @@ const form = reactive({
   desc: '',
   author: '',
   repo: '',
-  entry: '',
+  shinsekai_version: '',
   tags: '',
   social_link: ''
 })
@@ -159,7 +158,6 @@ const fieldErrors = computed(() => {
   if (descLength.value > maxDescLength) errors.desc = `短摘要最多 ${maxDescLength} 字符。`
   if (!form.repo) errors.repo = '需要 GitHub 仓库 URL。'
   else if (!isValidGithubRepoUrl(form.repo)) errors.repo = '仓库必须是 https://github.com/owner/repo。'
-  if (!form.entry) errors.entry = '需要插件入口。'
   if (tagList.value.length > 5) errors.tags = '标签最多 5 个。'
   return errors
 })
