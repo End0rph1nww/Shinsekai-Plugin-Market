@@ -59,7 +59,7 @@ defineProps({
 defineEmits(['update:modelValue'])
 
 const siteUrl = import.meta.env.VITE_SITE_URL || '/'
-const registryForkUrl = import.meta.env.VITE_REGISTRY_FORK_URL || 'https://github.com/RachelForster/Shinsekai-Plugin-Registry'
+const registryForkUrl = import.meta.env.VITE_REGISTRY_FORK_URL || 'https://github.com/End0rph1nww/Shinsekai-Plugin-Registry'
 const router = useRouter()
 
 function goSubmit() {

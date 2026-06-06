@@ -1,7 +1,7 @@
-export const DEFAULT_REGISTRY_URL = 'https://raw.githubusercontent.com/RachelForster/Shinsekai-Plugin-Registry/main/plugin_cache_original.json'
+export const DEFAULT_REGISTRY_URL = 'https://raw.githubusercontent.com/End0rph1nww/Shinsekai-Plugin-Registry/main/plugin_cache_original.json'
 export const SUBMIT_TEMPLATE = 'PLUGIN_PUBLISH.yml'
 export const SUBMIT_PLUGIN_INFO_FIELD = 'plugin-info'
-export const SUBMIT_PLUGIN_URL = `https://github.com/RachelForster/Shinsekai-Plugin-Registry/issues/new?template=${SUBMIT_TEMPLATE}`
+export const SUBMIT_PLUGIN_URL = `https://github.com/End0rph1nww/Shinsekai-Plugin-Registry/issues/new?template=${SUBMIT_TEMPLATE}`
 export const MAX_SUBMISSION_DESC_LENGTH = 200
 const GITHUB_SLUG_PART_RE = /^[A-Za-z0-9_.-]+$/
 
