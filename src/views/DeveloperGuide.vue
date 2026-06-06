@@ -87,11 +87,11 @@
           <section id="assets" class="docs-section">
             <p class="eyebrow">04 / ASSETS</p>
             <h2>依赖、Logo 与文档</h2>
-            <div class="docs-checklist">
-              <p><check-circle :size="16" /> 依赖写入 <code>requirements.txt</code>，安装时由客户端执行。</p>
-              <p><check-circle :size="16" /> Logo 放在仓库根目录或 <code>assets/</code>、<code>static/</code>、<code>public/</code>、<code>resources/</code>、<code>images/</code>、<code>img/</code>。</p>
-              <p><check-circle :size="16" /> Logo 文件名使用 <code>logo.png</code>、<code>logo.jpg</code>、<code>logo.jpeg</code> 或 <code>logo.webp</code>。</p>
-              <p><check-circle :size="16" /> 建议提供 <code>README.md</code>，写清功能、配置方式、依赖来源和风险提示。</p>
+            <div class="docs-checklist docs-checklist--assets">
+              <p><package :size="16" /> 依赖写入 <code>requirements.txt</code>，安装时由客户端执行。</p>
+              <p><image-icon :size="16" /> Logo 放在仓库根目录或 <code>assets/</code>、<code>static/</code>、<code>public/</code>、<code>resources/</code>、<code>images/</code>、<code>img/</code>。</p>
+              <p><image-icon :size="16" /> Logo 文件名使用 <code>logo.png</code>、<code>logo.jpg</code>、<code>logo.jpeg</code> 或 <code>logo.webp</code>。</p>
+              <p><file-text :size="16" /> 建议提供 <code>README.md</code>，写清功能、配置方式、依赖来源和风险提示。</p>
             </div>
             <p>
               CI 会把合法 Logo 上传到 R2 的 <code>assets/&lt;owner&gt;/&lt;plugin&gt;/&lt;version&gt;/</code> 路径，包体会上传到
@@ -167,7 +167,7 @@
 <script setup>
 import { markRaw } from 'vue'
 import { storeToRefs } from 'pinia'
-import { BookOpen, CheckCircle, GitPullRequest, PackageCheck, ShieldCheck } from '@lucide/vue'
+import { BookOpen, FileText, GitPullRequest, ImageIcon, Package, PackageCheck, ShieldCheck } from '@lucide/vue'
 import AppHeader from '../components/AppHeader.vue'
 import AppFooter from '../components/AppFooter.vue'
 import { usePluginStore } from '../stores/plugins'

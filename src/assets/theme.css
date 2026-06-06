@@ -1660,6 +1660,10 @@
   margin-top: 0.22rem;
 }
 
+.docs-checklist--assets svg {
+  color: var(--sys-rose-deep);
+}
+
 .docs-checklist--danger svg {
   color: var(--sys-rose-deep);
 }
