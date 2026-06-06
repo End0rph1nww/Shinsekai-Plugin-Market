@@ -22,5 +22,5 @@
 import { computed } from 'vue'
 
 const currentYear = computed(() => new Date().getFullYear())
-const registryForkUrl = import.meta.env.VITE_REGISTRY_FORK_URL || ''
+const registryForkUrl = import.meta.env.VITE_REGISTRY_FORK_URL || 'https://github.com/End0rph1nww/Shinsekai-Plugin-Registry'
 </script>

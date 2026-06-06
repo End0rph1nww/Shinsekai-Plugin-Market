@@ -32,10 +32,10 @@ cp .env.example .env
 
 | Variable | Description | Default |
 | --- | --- | --- |
-| `VITE_PLUGIN_REGISTRY_URL` | Registry JSON URL. Prefer generated `plugin_cache_original.json` when available. | Upstream registry |
-| `VITE_SUBMIT_URL` | GitHub Issue URL for plugin submission. | Upstream registry issue form |
+| `VITE_PLUGIN_REGISTRY_URL` | Registry JSON URL. Prefer generated `plugin_cache_original.json` when available. | Shinsekai registry fork |
+| `VITE_SUBMIT_URL` | GitHub Issue URL for plugin submission. | Shinsekai registry fork issue form |
 | `VITE_SITE_URL` | Shinsekai main site base URL. | `/` |
-| `VITE_REGISTRY_FORK_URL` | Registry link shown in footer. | Hidden when empty |
+| `VITE_REGISTRY_FORK_URL` | Registry link shown in header and footer. | Shinsekai registry fork |
 
 ## Submission Contract
 
