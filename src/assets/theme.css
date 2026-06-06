@@ -1078,24 +1078,15 @@
   font-size: 0.76rem;
 }
 
-.plugin-card__meta-line,
-.plugin-card__status-line {
+.plugin-card__meta-line {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-}
-
-.plugin-card__meta-line {
   gap: 0.22rem 0.62rem;
   color: var(--text-tertiary);
 }
 
-.plugin-card__status-line {
-  gap: 0.36rem;
-}
-
-.plugin-card__meta-line span,
-.plugin-card__status-chip {
+.plugin-card__meta-line span {
   display: inline-flex;
   align-items: center;
   gap: 0.28rem;
@@ -1111,22 +1102,6 @@
   background: rgba(155, 120, 144, 0.62);
 }
 
-.plugin-card__status-chip {
-  min-height: 1.35rem;
-  border: 1px solid rgba(223, 174, 199, 0.52);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.42);
-  font-size: 0.72rem;
-  font-weight: 850;
-  line-height: 1;
-  padding: 0.12rem 0.48rem;
-}
-
-.dark .plugin-card__status-chip {
-  border-color: var(--sys-purple-line);
-  background: rgba(255, 255, 255, 0.06);
-}
-
 .plugin-card__foot {
   margin-top: 0.15rem;
 }
@@ -1138,48 +1113,6 @@
 .repo-link {
   min-height: 2rem;
   padding-inline: 0.62rem;
-}
-
-.plugin-card__scan--passed {
-  border-color: rgba(16, 185, 129, 0.34);
-  background: rgba(16, 185, 129, 0.08);
-  color: #0f8a55 !important;
-}
-
-.plugin-card__scan--blocked {
-  border-color: rgba(249, 115, 22, 0.35);
-  background: rgba(249, 115, 22, 0.08);
-  color: #c2410c !important;
-}
-
-.plugin-card__scan--unknown {
-  border-color: rgba(155, 120, 144, 0.28);
-  background: rgba(255, 255, 255, 0.36);
-  color: var(--text-tertiary) !important;
-}
-
-.plugin-card__review--verified {
-  border-color: rgba(16, 185, 129, 0.34);
-  background: rgba(16, 185, 129, 0.08);
-  color: #047857 !important;
-}
-
-.plugin-card__review--pending {
-  border-color: rgba(245, 158, 11, 0.36);
-  background: rgba(245, 158, 11, 0.09);
-  color: #a16207 !important;
-}
-
-.plugin-card__review--blocked {
-  border-color: rgba(239, 68, 68, 0.36);
-  background: rgba(239, 68, 68, 0.08);
-  color: #b91c1c !important;
-}
-
-.plugin-card__review--community {
-  border-color: rgba(59, 130, 246, 0.3);
-  background: rgba(59, 130, 246, 0.07);
-  color: #2563eb !important;
 }
 
 .plugin-detail .detail-grid dd small {

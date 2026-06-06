@@ -25,10 +25,6 @@
         <span v-if="plugin.packageSize"><hard-drive :size="13" />{{ packageSizeLabel }}</span>
         <span><star :size="13" />{{ starLabel }}</span>
       </div>
-      <div class="plugin-card__status-line">
-        <span :class="scanClass"><shield-check :size="13" />{{ scanLabel }}</span>
-        <span :class="reviewClass"><shield-check :size="13" />{{ reviewLabel }}</span>
-      </div>
     </div>
 
     <div class="plugin-card__foot">
@@ -76,27 +72,9 @@ const versionLabel = computed(() => props.plugin.version && props.plugin.version
 const starLabel = computed(() => props.plugin.stars > 0 ? props.plugin.stars.toLocaleString() : '0')
 const packageLabel = computed(() => props.plugin.packageSource === 'r2' ? 'R2 包' : '安装包')
 const packageSizeLabel = computed(() => formatBytes(props.plugin.packageSize))
-const scanLabel = computed(() => {
-  if (props.plugin.scanState === 'passed') return '自动通过'
-  if (props.plugin.scanState === 'blocked') return '自动拦截'
-  return '未自动检查'
-})
-const scanClass = computed(() => ['plugin-card__status-chip', 'plugin-card__scan', `plugin-card__scan--${props.plugin.scanState || 'unknown'}`])
-const trustBadgeState = computed(() => props.plugin.trustState || 'community')
-const trustBadgeLabel = computed(() => {
-  if (trustBadgeState.value === 'verified') return 'Verified'
-  if (trustBadgeState.value === 'pending') return 'Pending'
-  if (trustBadgeState.value === 'blocked') return 'Blocked'
-  return 'Community'
-})
+const trustBadgeState = computed(() => props.plugin.trustState === 'verified' && props.plugin.verified === true ? 'verified' : 'community')
+const trustBadgeLabel = computed(() => trustBadgeState.value === 'verified' ? 'Verified' : 'Community')
 const trustClass = computed(() => ['trust-badge', `trust-badge--${trustBadgeState.value}`])
-const reviewLabel = computed(() => {
-  if (props.plugin.trustState === 'verified') return '人工通过'
-  if (props.plugin.trustState === 'pending') return '更新待复审'
-  if (props.plugin.trustState === 'blocked') return '审查拦截'
-  return '未人工审查'
-})
-const reviewClass = computed(() => ['plugin-card__status-chip', 'plugin-card__review', `plugin-card__review--${props.plugin.trustState || 'community'}`])
 const visibleTags = computed(() => props.plugin.tags.slice(0, 3))
 const extraTagCount = computed(() => Math.max(0, props.plugin.tags.length - visibleTags.value.length))
 </script>
