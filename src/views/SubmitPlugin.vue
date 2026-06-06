@@ -22,13 +22,13 @@
             <div class="submit-grid">
               <label class="submit-field" :class="{ invalid: fieldErrors.display_name }">
                 <span>展示名称</span>
-                <input v-model.trim="form.display_name" type="text" placeholder="Whisper Asr" />
+                <input v-model.trim="form.display_name" type="text" placeholder="Shinsekai Plugin" />
                 <small v-if="fieldErrors.display_name">{{ fieldErrors.display_name }}</small>
               </label>
 
               <label class="submit-field" :class="{ invalid: fieldErrors.author }">
                 <span>作者</span>
-                <input v-model.trim="form.author" type="text" placeholder="RachelForster" />
+                <input v-model.trim="form.author" type="text" placeholder="Shinsekai Contributors" />
                 <small v-if="fieldErrors.author">{{ fieldErrors.author }}</small>
               </label>
             </div>
@@ -48,26 +48,26 @@
 
             <label class="submit-field submit-field--wide" :class="{ invalid: fieldErrors.repo }">
               <span>GitHub 仓库 URL</span>
-              <input v-model.trim="form.repo" type="url" placeholder="https://github.com/RachelForster/Shinsekai" />
+              <input v-model.trim="form.repo" type="url" placeholder="https://github.com/shinsekai/plugin-example" />
               <small v-if="fieldErrors.repo">{{ fieldErrors.repo }}</small>
             </label>
 
             <label class="submit-field submit-field--wide" :class="{ invalid: fieldErrors.entry }">
               <span>插件入口</span>
-              <input v-model.trim="form.entry" type="text" placeholder="plugins.whisper_asr.plugin:WhisperAsrPlugin" />
+              <input v-model.trim="form.entry" type="text" placeholder="plugins.shinsekai_plugin.plugin:ShinsekaiPlugin" />
               <small v-if="fieldErrors.entry">{{ fieldErrors.entry }}</small>
             </label>
 
             <div class="submit-grid">
               <label class="submit-field" :class="{ invalid: fieldErrors.tags }">
                 <span>标签</span>
-                <input v-model="form.tags" type="text" placeholder="asr, whisper" />
+                <input v-model="form.tags" type="text" placeholder="shinsekai, example" />
                 <small v-if="fieldErrors.tags">{{ fieldErrors.tags }}</small>
               </label>
 
               <label class="submit-field">
                 <span>社交链接</span>
-                <input v-model.trim="form.social_link" type="url" placeholder="https://github.com/RachelForster" />
+                <input v-model.trim="form.social_link" type="url" placeholder="https://github.com/shinsekai" />
               </label>
             </div>
           </div>

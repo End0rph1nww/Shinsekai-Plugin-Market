@@ -219,6 +219,7 @@ export function buildSubmissionIssueUrl(form, baseUrl = SUBMIT_PLUGIN_URL) {
     const url = new URL(baseUrl)
     if (!url.searchParams.get('template')) url.searchParams.set('template', SUBMIT_TEMPLATE)
     if (payload.display_name) url.searchParams.set('title', `[Plugin] ${payload.display_name}`)
+    url.searchParams.delete('body')
     url.searchParams.set(SUBMIT_PLUGIN_INFO_FIELD, body)
     return url.toString()
   } catch (_) {

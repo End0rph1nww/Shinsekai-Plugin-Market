@@ -61,11 +61,11 @@ Legacy source entries:
 
 ```json
 {
-  "name": "moondream_vision",
-  "author": "Chihiro",
-  "repo": "RachelForster/shinsekai-moondream-vision",
-  "description": "Enable your character to see your screen",
-  "entry": "moondream_vision.plugin:MoondreamVisionPlugin"
+  "name": "shinsekai_plugin",
+  "author": "Shinsekai Contributors",
+  "repo": "shinsekai/plugin-example",
+  "description": "Example plugin for Shinsekai",
+  "entry": "shinsekai_plugin.plugin:ShinsekaiPlugin"
 }
 ```
 
