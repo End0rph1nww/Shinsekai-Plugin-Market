@@ -20,6 +20,7 @@ Based on `AstrBotDevs/Astrbot_Plugins_Market`, modified for Shinsekai Plugin Mar
 - Object-shaped and array-shaped registry payload support.
 - Generated package fields display: `download_url`, `sha256`, `size`, `commit_sha`, `package.url`, `package.sha256`, `package.size`, `package.r2_key`, and `sec_scan`.
 - Submit wizard that generates the same JSON contract as the Registry issue template.
+- Developer guide page for Shinsekai plugin structure, entry inference, Logo, dependencies, and R2 distribution.
 - Copy install info and submission JSON.
 
 ## Configuration
@@ -50,13 +51,13 @@ The submit wizard emits:
   "desc": "Short description, 200 characters or fewer",
   "author": "author",
   "repo": "https://github.com/owner/repo",
-  "entry": "plugins.package.plugin:PluginClass",
+  "shinsekai_version": ">=0.2.0",
   "tags": [],
   "social_link": ""
 }
 ```
 
-The market does not upload packages. Registry CI parses the issue JSON, opens a maintainer-review PR, and later packages approved plugins to R2.
+The market does not upload packages. Registry CI parses the issue JSON, infers `entry` from the plugin repository, opens a maintainer-review PR, and later packages approved plugins to R2.
 
 ## Registry Format
 
