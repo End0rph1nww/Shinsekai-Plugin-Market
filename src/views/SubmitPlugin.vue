@@ -128,7 +128,8 @@ import {
   MAX_SUBMISSION_DESC_LENGTH,
   SUBMIT_PLUGIN_URL,
   buildSubmissionIssueUrl,
-  buildSubmissionJson
+  buildSubmissionJson,
+  isValidGithubRepoUrl
 } from '../utils/pluginNormalizer'
 
 const store = usePluginStore()
@@ -157,7 +158,7 @@ const fieldErrors = computed(() => {
   if (!form.desc) errors.desc = '需要短摘要。'
   if (descLength.value > maxDescLength) errors.desc = `短摘要最多 ${maxDescLength} 字符。`
   if (!form.repo) errors.repo = '需要 GitHub 仓库 URL。'
-  else if (!isGithubRepoUrl(form.repo)) errors.repo = '仓库必须是 https://github.com/owner/repo。'
+  else if (!isValidGithubRepoUrl(form.repo)) errors.repo = '仓库必须是 https://github.com/owner/repo。'
   if (!form.entry) errors.entry = '需要插件入口。'
   if (tagList.value.length > 5) errors.tags = '标签最多 5 个。'
   return errors
@@ -167,22 +168,6 @@ const validationList = computed(() => Object.values(fieldErrors.value))
 const isValid = computed(() => validationList.value.length === 0)
 const submissionJson = computed(() => buildSubmissionJson({ ...form, tags: tagList.value }))
 const issueUrl = computed(() => buildSubmissionIssueUrl({ ...form, tags: tagList.value }, submitUrl))
-
-function isGithubRepoUrl(value) {
-  try {
-    const url = new URL(value)
-    const parts = url.pathname.replace(/^\/|\/$/g, '').split('/')
-    return url.protocol === 'https:'
-      && url.hostname === 'github.com'
-      && parts.length === 2
-      && parts.every(Boolean)
-      && !parts[1].endsWith('.git')
-      && !url.search
-      && !url.hash
-  } catch (_) {
-    return false
-  }
-}
 
 async function copyJson() {
   try {

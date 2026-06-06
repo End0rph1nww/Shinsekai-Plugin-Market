@@ -1,8 +1,9 @@
-export const DEFAULT_REGISTRY_URL = 'https://raw.githubusercontent.com/End0rph1nww/Shinsekai-Plugin-Registry/main/plugins.json'
+export const DEFAULT_REGISTRY_URL = 'https://raw.githubusercontent.com/RachelForster/Shinsekai-Plugin-Registry/main/plugin_cache_original.json'
 export const SUBMIT_TEMPLATE = 'PLUGIN_PUBLISH.yml'
 export const SUBMIT_PLUGIN_INFO_FIELD = 'plugin-info'
-export const SUBMIT_PLUGIN_URL = `https://github.com/End0rph1nww/Shinsekai-Plugin-Registry/issues/new?template=${SUBMIT_TEMPLATE}`
+export const SUBMIT_PLUGIN_URL = `https://github.com/RachelForster/Shinsekai-Plugin-Registry/issues/new?template=${SUBMIT_TEMPLATE}`
 export const MAX_SUBMISSION_DESC_LENGTH = 200
+const GITHUB_SLUG_PART_RE = /^[A-Za-z0-9_.-]+$/
 
 function asString(value, fallback = '') {
   if (value === null || value === undefined) return fallback
@@ -40,6 +41,22 @@ function normalizeRepoPath(repo) {
   }
 
   return value.replace(/^github\.com\//, '').replace(/^\//, '').replace(/\.git$/, '')
+}
+
+export function isValidGithubRepoUrl(value) {
+  try {
+    const url = new URL(asString(value))
+    const parts = url.pathname.replace(/^\/|\/$/g, '').split('/')
+    return url.protocol === 'https:'
+      && url.hostname === 'github.com'
+      && parts.length === 2
+      && parts.every(part => GITHUB_SLUG_PART_RE.test(part))
+      && !parts[1].endsWith('.git')
+      && !url.search
+      && !url.hash
+  } catch (_) {
+    return false
+  }
 }
 
 function normalizeTags(tags) {
