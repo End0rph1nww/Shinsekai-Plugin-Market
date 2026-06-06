@@ -32,12 +32,13 @@ cp .env.example .env
 
 | Variable | Description | Default |
 | --- | --- | --- |
-| `VITE_PLUGIN_REGISTRY_URL` | Registry JSON URL. Prefer generated `plugin_cache_original.json` when available. | Staging fork `plugin_cache_original.json` |
+| `VITE_PLUGIN_REGISTRY_URL` | Primary registry JSON URL. Prefer the R2 mirrored `registry/plugin_cache_original.json` for fresh reads. | Staging R2 generated registry |
+| `VITE_PLUGIN_REGISTRY_FALLBACK_URLS` | Optional comma-separated fallback registry URLs. | Staging fork GitHub Raw registry |
 | `VITE_SUBMIT_URL` | GitHub Issue URL for plugin submission. | Staging fork issue form |
 | `VITE_SITE_URL` | Shinsekai main site base URL. | `/` |
 | `VITE_REGISTRY_FORK_URL` | Registry link shown in header and footer. | Staging fork registry |
 
-During active development, defaults point to `End0rph1nww/Shinsekai-Plugin-Registry` so the market and client can see staged Issue/CI/R2 output. Before preparing the upstream-facing PR, switch these defaults or deployment variables to `RachelForster/Shinsekai-Plugin-Registry`.
+During active development, defaults point to staging R2 plus `End0rph1nww/Shinsekai-Plugin-Registry` fallbacks so the market and client can see staged Issue/CI/R2 output without waiting for GitHub Raw cache. Before preparing the upstream-facing PR, switch these defaults or deployment variables to the accepted upstream registry and production R2 domain.
 
 ## Submission Contract
 

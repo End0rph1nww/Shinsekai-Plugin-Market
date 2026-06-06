@@ -1,11 +1,24 @@
 import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
-import { DEFAULT_REGISTRY_URL, normalizeRegistryPayload } from '../utils/pluginNormalizer'
+import {
+  DEFAULT_REGISTRY_FALLBACK_URLS,
+  DEFAULT_REGISTRY_URL,
+  normalizeRegistryPayload
+} from '../utils/pluginNormalizer'
 
 const PAGE_SIZE = 9
 
 function resolveRegistryUrl() {
   return import.meta.env.VITE_PLUGIN_REGISTRY_URL || DEFAULT_REGISTRY_URL
+}
+
+function resolveRegistryFallbackUrls() {
+  const raw = import.meta.env.VITE_PLUGIN_REGISTRY_FALLBACK_URLS || ''
+  const urls = raw
+    .split(',')
+    .map(item => item.trim())
+    .filter(Boolean)
+  return urls.length > 0 ? urls : DEFAULT_REGISTRY_FALLBACK_URLS
 }
 
 function parseGithubDate(value) {
@@ -162,31 +175,41 @@ export const usePluginStore = defineStore('plugins', () => {
     if (currentPage.value > value) currentPage.value = value
   })
 
-  async function loadPlugins(url = registryUrl.value) {
+  async function loadPlugins(url = '') {
     isLoading.value = true
     error.value = ''
-    registryUrl.value = url || resolveRegistryUrl()
+    const primaryUrl = url || resolveRegistryUrl()
+    const fallbackUrls = primaryUrl === resolveRegistryUrl()
+      ? resolveRegistryFallbackUrls().filter(item => item !== primaryUrl)
+      : []
+    const registryUrls = [primaryUrl, ...fallbackUrls]
+    registryUrl.value = primaryUrl
+    let lastError = null
 
-    try {
-      const response = await fetch(registryUrl.value, { cache: 'no-store' })
-      if (!response.ok) {
-        throw new Error(`Registry request failed: HTTP ${response.status}`)
+    for (const candidateUrl of registryUrls) {
+      try {
+        const response = await fetch(candidateUrl, { cache: 'no-store' })
+        if (!response.ok) {
+          throw new Error(`Registry request failed: HTTP ${response.status}`)
+        }
+
+        const payload = await response.json()
+        const normalizedPlugins = normalizeRegistryPayload(payload)
+        registryUrl.value = candidateUrl
+        plugins.value = normalizedPlugins
+        isLoading.value = false
+        Promise.all(normalizedPlugins.map(fetchGithubRepoStats))
+          .then(hydratedPlugins => { plugins.value = hydratedPlugins })
+          .catch(() => {})
+        return
+      } catch (err) {
+        lastError = err
       }
-
-      const payload = await response.json()
-      const normalizedPlugins = normalizeRegistryPayload(payload)
-      plugins.value = normalizedPlugins
-      isLoading.value = false
-      Promise.all(normalizedPlugins.map(fetchGithubRepoStats))
-        .then(hydratedPlugins => { plugins.value = hydratedPlugins })
-        .catch(() => {})
-      return
-    } catch (err) {
-      plugins.value = []
-      error.value = err instanceof Error ? err.message : 'Registry 加载失败'
-    } finally {
-      isLoading.value = false
     }
+
+    plugins.value = []
+    error.value = lastError instanceof Error ? lastError.message : 'Registry 加载失败'
+    isLoading.value = false
   }
 
   function setDarkMode(value) {

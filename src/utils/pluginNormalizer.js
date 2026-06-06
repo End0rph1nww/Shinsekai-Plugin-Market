@@ -1,4 +1,6 @@
-export const DEFAULT_REGISTRY_URL = 'https://raw.githubusercontent.com/End0rph1nww/Shinsekai-Plugin-Registry/main/plugin_cache_original.json'
+export const DEFAULT_REGISTRY_URL = 'https://pub-9e11c3d88dbc49699652c547dcf7efe7.r2.dev/registry/plugin_cache_original.json'
+export const RAW_REGISTRY_URL = 'https://raw.githubusercontent.com/End0rph1nww/Shinsekai-Plugin-Registry/main/plugin_cache_original.json'
+export const DEFAULT_REGISTRY_FALLBACK_URLS = [RAW_REGISTRY_URL]
 export const SUBMIT_TEMPLATE = 'PLUGIN_PUBLISH.yml'
 export const SUBMIT_PLUGIN_INFO_FIELD = 'plugin-info'
 export const SUBMIT_PLUGIN_URL = `https://github.com/End0rph1nww/Shinsekai-Plugin-Registry/issues/new?template=${SUBMIT_TEMPLATE}`
