@@ -22,13 +22,13 @@
             <div class="submit-grid">
               <label class="submit-field" :class="{ invalid: fieldErrors.display_name }">
                 <span>展示名称</span>
-                <input v-model.trim="form.display_name" type="text" placeholder="Cloud TTS" />
+                <input v-model.trim="form.display_name" type="text" placeholder="Whisper Asr" />
                 <small v-if="fieldErrors.display_name">{{ fieldErrors.display_name }}</small>
               </label>
 
               <label class="submit-field" :class="{ invalid: fieldErrors.author }">
                 <span>作者</span>
-                <input v-model.trim="form.author" type="text" placeholder="End0rph1nww" />
+                <input v-model.trim="form.author" type="text" placeholder="RachelForster" />
                 <small v-if="fieldErrors.author">{{ fieldErrors.author }}</small>
               </label>
             </div>
@@ -48,26 +48,26 @@
 
             <label class="submit-field submit-field--wide" :class="{ invalid: fieldErrors.repo }">
               <span>GitHub 仓库 URL</span>
-              <input v-model.trim="form.repo" type="url" placeholder="https://github.com/owner/repo" />
+              <input v-model.trim="form.repo" type="url" placeholder="https://github.com/RachelForster/Shinsekai" />
               <small v-if="fieldErrors.repo">{{ fieldErrors.repo }}</small>
             </label>
 
             <label class="submit-field submit-field--wide" :class="{ invalid: fieldErrors.entry }">
               <span>插件入口</span>
-              <input v-model.trim="form.entry" type="text" placeholder="plugins.package.plugin:PluginClass" />
+              <input v-model.trim="form.entry" type="text" placeholder="plugins.whisper_asr.plugin:WhisperAsrPlugin" />
               <small v-if="fieldErrors.entry">{{ fieldErrors.entry }}</small>
             </label>
 
             <div class="submit-grid">
               <label class="submit-field" :class="{ invalid: fieldErrors.tags }">
                 <span>标签</span>
-                <input v-model="form.tags" type="text" placeholder="tts, voice, cloud" />
+                <input v-model="form.tags" type="text" placeholder="asr, whisper" />
                 <small v-if="fieldErrors.tags">{{ fieldErrors.tags }}</small>
               </label>
 
               <label class="submit-field">
                 <span>社交链接</span>
-                <input v-model.trim="form.social_link" type="url" placeholder="https://github.com/owner" />
+                <input v-model.trim="form.social_link" type="url" placeholder="https://github.com/RachelForster" />
               </label>
             </div>
           </div>
@@ -75,9 +75,25 @@
 
         <aside class="submit-preview">
           <div class="submit-panel submit-panel--sticky">
-            <div class="submit-panel__head">
-              <p class="eyebrow">STEP 03</p>
-              <h2>提交 JSON</h2>
+            <div class="submit-panel__head submit-panel__head--with-actions">
+              <div>
+                <p class="eyebrow">STEP 03</p>
+                <h2>提交 JSON</h2>
+              </div>
+              <div class="submit-actions submit-actions--header">
+                <n-button secondary @click="copyJson">
+                  <template #icon>
+                    <n-icon><copy :size="15" /></n-icon>
+                  </template>
+                  复制 JSON
+                </n-button>
+                <n-button type="primary" :disabled="!isValid" @click="openIssue">
+                  <template #icon>
+                    <n-icon><external-link :size="15" /></n-icon>
+                  </template>
+                  打开 Issue
+                </n-button>
+              </div>
             </div>
 
             <div class="submit-status" :class="isValid ? 'is-ready' : 'is-blocked'">
@@ -87,21 +103,6 @@
             </div>
 
             <pre class="submit-json">{{ submissionJson }}</pre>
-
-            <div class="submit-actions">
-              <n-button secondary @click="copyJson">
-                <template #icon>
-                  <n-icon><copy :size="15" /></n-icon>
-                </template>
-                复制 JSON
-              </n-button>
-              <n-button type="primary" :disabled="!isValid" @click="openIssue">
-                <template #icon>
-                  <n-icon><external-link :size="15" /></n-icon>
-                </template>
-                打开 Issue
-              </n-button>
-            </div>
 
             <div v-if="validationList.length" class="submit-errors">
               <p v-for="item in validationList" :key="item">{{ item }}</p>

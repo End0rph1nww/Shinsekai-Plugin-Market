@@ -1,5 +1,6 @@
 export const DEFAULT_REGISTRY_URL = 'https://raw.githubusercontent.com/End0rph1nww/Shinsekai-Plugin-Registry/main/plugins.json'
 export const SUBMIT_TEMPLATE = 'PLUGIN_PUBLISH.yml'
+export const SUBMIT_PLUGIN_INFO_FIELD = 'plugin-info'
 export const SUBMIT_PLUGIN_URL = `https://github.com/End0rph1nww/Shinsekai-Plugin-Registry/issues/new?template=${SUBMIT_TEMPLATE}`
 export const MAX_SUBMISSION_DESC_LENGTH = 200
 
@@ -218,7 +219,7 @@ export function buildSubmissionIssueUrl(form, baseUrl = SUBMIT_PLUGIN_URL) {
     const url = new URL(baseUrl)
     if (!url.searchParams.get('template')) url.searchParams.set('template', SUBMIT_TEMPLATE)
     if (payload.display_name) url.searchParams.set('title', `[Plugin] ${payload.display_name}`)
-    url.searchParams.set('body', body)
+    url.searchParams.set(SUBMIT_PLUGIN_INFO_FIELD, body)
     return url.toString()
   } catch (_) {
     return baseUrl

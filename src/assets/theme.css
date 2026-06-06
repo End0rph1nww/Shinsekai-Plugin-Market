@@ -1154,6 +1154,15 @@
   margin-bottom: 0.8rem;
 }
 
+.submit-panel__head--with-actions {
+  align-items: flex-start;
+  border-bottom: 1px solid var(--border-base);
+  border-radius: 8px 8px 0 0;
+  background: var(--sys-panel);
+  margin: -1rem -1rem 0.8rem;
+  padding: 1rem;
+}
+
 .submit-panel__head h2 {
   margin: 0;
   color: var(--text-primary);
@@ -1285,6 +1294,10 @@
   gap: 0.55rem;
 }
 
+.submit-actions--header {
+  margin-left: auto;
+}
+
 .submit-errors {
   display: grid;
   gap: 0.28rem;
@@ -1308,6 +1321,15 @@
 
   .submit-actions {
     justify-content: stretch;
+  }
+
+  .submit-panel__head--with-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .submit-actions--header {
+    margin-left: 0;
   }
 
   .submit-actions .n-button {
