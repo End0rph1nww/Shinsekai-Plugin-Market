@@ -29,12 +29,14 @@
             <p class="eyebrow">01 / START</p>
             <h2>最小仓库结构</h2>
             <p>
-              推荐把插件源码放在一个小写下划线目录里。这个目录名会参与 CI 的 entry 推断，也会成为安装后的包目录。
+              推荐把 <code>plugin.py</code>、<code>requirements.txt</code>、<code>README.md</code> 和 <code>logo.png</code>
+              放在仓库根目录。Registry CI 会克隆 GitHub 仓库，扫描根目录的 <code>plugin.py</code>，并用仓库名生成插件名、entry
+              和安装目录。
             </p>
             <pre><code>{{ repoTree }}</code></pre>
             <div class="docs-note">
               <strong>目录名规则</strong>
-              <span>使用 Python 可导入的名字，例如 <code>cloud_tts</code>、<code>playwright_browser</code>。避免空格、中文、连字符和特殊符号。</span>
+              <span>仓库名会转成小写下划线，例如 <code>Shinsekai-Plugin-Market</code> 会变成 <code>shinsekai_plugin_market</code>。复杂项目可以把辅助模块放进子目录，但入口 <code>plugin.py</code> 仍建议放在仓库根目录。</span>
             </div>
           </section>
 
@@ -69,8 +71,8 @@
             <p class="eyebrow">03 / ENTRY</p>
             <h2>entry 由 CI 自动推断</h2>
             <p>
-              作者提交插件时不需要手填 <code>entry</code>。Registry CI 会克隆插件仓库，寻找 <code>plugin.py</code>，读取继承
-              <code>PluginBase</code> 的插件类，然后生成最终 registry 条目。
+              作者提交插件时不需要手填 <code>entry</code>。Registry CI 会克隆插件仓库，寻找最靠近仓库根目录的
+              <code>plugin.py</code>，读取继承 <code>PluginBase</code> 的插件类，然后生成最终 registry 条目。
             </p>
             <div class="docs-steps">
               <span>查找 <code>plugin.py</code></span>
@@ -355,12 +357,10 @@ const capabilityRows = [
 ]
 
 const repoTree = `shinsekai-plugin-example/
-  example_plugin/
-    __init__.py
-    plugin.py
-    requirements.txt
-    README.md
-    logo.png`
+  plugin.py
+  requirements.txt
+  README.md
+  logo.png`
 
 const pluginExample = `from pathlib import Path
 
