@@ -30,7 +30,7 @@
             <h2>最小仓库结构</h2>
             <p>
               推荐把 <code>plugin.py</code>、<code>requirements.txt</code>、<code>README.md</code> 和 <code>logo.png</code>
-              放在仓库根目录。Registry CI 会克隆 GitHub 仓库，扫描根目录的 <code>plugin.py</code>，并用仓库名生成插件名、entry
+              放在仓库根目录。Registry CI 会克隆 GitHub 仓库，扫描最靠近根目录的 <code>plugin.py</code>，并用入口模块推断插件名、entry
               和安装目录。
             </p>
             <pre><code>{{ repoTree }}</code></pre>
@@ -91,13 +91,13 @@
             <h2>依赖、Logo 与文档</h2>
             <div class="docs-checklist docs-checklist--assets">
               <p><package :size="16" /> 依赖写入 <code>requirements.txt</code>，安装时由客户端执行。</p>
-              <p><image-icon :size="16" /> Logo 放在仓库根目录或 <code>assets/</code>、<code>static/</code>、<code>public/</code>、<code>resources/</code>、<code>images/</code>、<code>img/</code>。</p>
+              <p><image-icon :size="16" /> Logo 放在仓库根目录或 <code>assets/</code>、<code>asset/</code>、<code>static/</code>、<code>public/</code>、<code>resources/</code>、<code>res/</code>、<code>images/</code>、<code>img/</code>。</p>
               <p><image-icon :size="16" /> Logo 文件名使用 <code>logo.png</code>、<code>logo.jpg</code>、<code>logo.jpeg</code> 或 <code>logo.webp</code>。</p>
               <p><file-text :size="16" /> 建议提供 <code>README.md</code>，写清功能、配置方式、依赖来源和风险提示。</p>
             </div>
             <p>
-              CI 会把合法 Logo 上传到 R2 的 <code>assets/&lt;owner&gt;/&lt;plugin&gt;/&lt;version&gt;/</code> 路径，包体会上传到
-              <code>plugins/&lt;owner&gt;/&lt;plugin&gt;/&lt;version&gt;/</code> 路径。
+              CI 会把合法 Logo 上传到 R2 的 <code>assets/&lt;owner&gt;/&lt;plugin&gt;/&lt;version&gt;/logo-&lt;commit12&gt;.&lt;ext&gt;</code>，
+              包体会上传到 <code>plugins/&lt;owner&gt;/&lt;plugin&gt;/&lt;version&gt;/&lt;plugin&gt;-&lt;version&gt;-&lt;commit12&gt;.zip</code>。
             </p>
           </section>
 
@@ -107,7 +107,7 @@
             <div class="docs-pipeline">
               <div>
                 <strong>作者提交</strong>
-                <span>在市场提交页填写展示名、作者、简介、GitHub 仓库、标签和社交链接。</span>
+                <span>在市场提交页填写展示名、作者、简介、GitHub 仓库、标签、社交链接和最低 Shinsekai 版本。</span>
               </div>
               <div>
                 <strong>CI 建 PR</strong>
@@ -125,8 +125,42 @@
             <pre><code>{{ submissionExample }}</code></pre>
           </section>
 
+          <section id="updates" class="docs-section">
+            <p class="eyebrow">06 / UPDATES</p>
+            <h2>版本与更新方式</h2>
+            <p>
+              推荐插件作者用 GitHub Release 或 Tag 发布稳定版本。Registry CI 会按固定顺序解析源码 ref，并用解析到的 commit 判断是否需要重新打包。
+            </p>
+            <div class="docs-pipeline">
+              <div>
+                <strong>1. Registry 固定版本</strong>
+                <span>如果维护者在 Registry 条目里指定 <code>version</code>，CI 会优先把它当作 Git ref 解析。</span>
+              </div>
+              <div>
+                <strong>2. GitHub Latest Release</strong>
+                <span>没有固定版本时，CI 优先读取仓库的 Latest Release，并使用其 <code>tag_name</code>。</span>
+              </div>
+              <div>
+                <strong>3. 最新 Tag</strong>
+                <span>没有 Release 时，CI 读取最新 Tag。建议使用 <code>v0.1.0</code> 这类清晰版本。</span>
+              </div>
+              <div>
+                <strong>4. 默认分支 HEAD</strong>
+                <span>没有 Release/Tag 时，CI 会使用默认分支最新 commit，并用 <code>v0.0.0</code> 作为 fallback。</span>
+              </div>
+            </div>
+            <div class="docs-note">
+              <strong>显示版本来源</strong>
+              <span>包体版本优先读取 <code>plugin.py</code> 中的 <code>plugin_version</code>；没有时才使用 Release/Tag/ref fallback。发布新版本时请同时更新 <code>plugin_version</code> 并推 Tag 或 Release。</span>
+            </div>
+            <div class="docs-note docs-note--warn">
+              <strong>自动轮询逻辑</strong>
+              <span>定时 workflow 会比较当前解析到的仓库 commit 与已打包的 <code>commit_sha</code>。不同就重新选择该插件打包；缺少包体 URL 也会重新打包。Star、Fork 和仓库更新时间会随生成索引刷新。</span>
+            </div>
+          </section>
+
           <section id="runtime" class="docs-section">
-            <p class="eyebrow">06 / RUNTIME</p>
+            <p class="eyebrow">07 / RUNTIME</p>
             <h2>运行时与能力注册</h2>
             <p>
               插件启用后，宿主会把它写入 <code>data/config/plugins.yaml</code>。运行时从这里读取 entry，再导入插件类并调用
@@ -149,7 +183,7 @@
           </section>
 
           <section id="api-overview" class="docs-section">
-            <p class="eyebrow">07 / API</p>
+            <p class="eyebrow">08 / API</p>
             <h2>能力注册接口</h2>
             <p>
               <code>initialize()</code> 里的 <code>register</code> 是插件接入宿主的主要入口。下面这些接口来自当前 SDK，文档只列推荐公开用法。
@@ -164,7 +198,7 @@
           </section>
 
           <section id="llm-tools" class="docs-section">
-            <p class="eyebrow">08 / LLM TOOLS</p>
+            <p class="eyebrow">09 / LLM TOOLS</p>
             <h2>注册 LLM 工具</h2>
             <p>
               推荐使用 <code>sdk.tool_registry.tool</code> 装饰器。工具模块需要在 <code>initialize()</code> 里被导入一次，装饰器才会登记到全局工具表。
@@ -177,7 +211,7 @@
           </section>
 
           <section id="adapters" class="docs-section">
-            <p class="eyebrow">09 / ADAPTERS</p>
+            <p class="eyebrow">10 / ADAPTERS</p>
             <h2>注册 Adapter 后端</h2>
             <p>
               Adapter 用来扩展 LLM、TTS、ASR、T2I 后端。类需要继承 <code>sdk.adapters</code> 下对应基类，再通过 register 方法挂到宿主。
@@ -190,7 +224,7 @@
           </section>
 
           <section id="frontend-config" class="docs-section">
-            <p class="eyebrow">10 / CONFIG UI</p>
+            <p class="eyebrow">11 / CONFIG UI</p>
             <h2>React 配置页</h2>
             <p>
               现在主程序前端可以直接渲染 <code>FrontendConfigContribution</code>。它由 schema、读取函数和保存函数组成，适合插件设置项。
@@ -210,7 +244,7 @@
           </section>
 
           <section id="frontend-page" class="docs-section">
-            <p class="eyebrow">11 / FRONTEND PAGE</p>
+            <p class="eyebrow">12 / FRONTEND PAGE</p>
             <h2>插件自带前端页面</h2>
             <p>
               如果插件需要完整交互界面，可以把构建后的 <code>frontend/dist/index.html</code> 交给 <code>FrontendPageContribution</code>。
@@ -220,7 +254,7 @@
           </section>
 
           <section id="context" class="docs-section">
-            <p class="eyebrow">12 / CONTEXT</p>
+            <p class="eyebrow">13 / CONTEXT</p>
             <h2>上下文与数据目录</h2>
             <p>
               <code>host</code> 是只读快照，不包含 API Key、Token 或保存全局配置的句柄。插件私有数据应写到 <code>plugin_root</code>。
@@ -246,13 +280,14 @@
           </section>
 
           <section id="safety" class="docs-section">
-            <p class="eyebrow">13 / SAFETY</p>
+            <p class="eyebrow">14 / SAFETY</p>
             <h2>安全与可维护性</h2>
             <div class="docs-checklist docs-checklist--danger">
               <p><shield-check :size="16" /> 不提交 token、Cookie、<code>.env</code>、账号配置、缓存、虚拟环境或构建临时目录。</p>
               <p><shield-check :size="16" /> 不在安装阶段执行与插件无关的系统修改。</p>
               <p><shield-check :size="16" /> 网络请求、文件读写和外部命令需要在 README 中说明原因。</p>
               <p><shield-check :size="16" /> Community 表示通过基础 CI 检查，不代表已完成完整安全审计。</p>
+              <p><shield-check :size="16" /> Verified 绑定到维护者复核过的 commit 与 version；发布新 commit 或新版本后会进入待复核状态。</p>
             </div>
           </section>
         </article>
@@ -303,6 +338,7 @@ const tocItems = [
   { href: '#entry', label: '入口推断' },
   { href: '#assets', label: '依赖与 Logo' },
   { href: '#submit', label: '发布流程' },
+  { href: '#updates', label: '更新方式' },
   { href: '#runtime', label: '运行时' },
   { href: '#api-overview', label: '注册接口' },
   { href: '#llm-tools', label: 'LLM 工具' },
@@ -404,7 +440,7 @@ const submissionExample = `{
   "desc": "面向 Shinsekai 的示例插件，说明核心能力和适用场景。",
   "author": "Shinsekai Contributors",
   "repo": "https://github.com/shinsekai/plugin-example",
-  "lowest_shinsekai_version": "0.2.0",
+  "lowest_shinsekai_version": ">=0.2.0",
   "tags": ["example"],
   "social_link": "https://github.com/shinsekai"
 }`

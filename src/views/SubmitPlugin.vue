@@ -55,7 +55,7 @@
             <div class="submit-grid">
               <label class="submit-field">
                 <span>最低 Shinsekai 版本（可选）</span>
-                <input v-model.trim="form.lowest_shinsekai_version" type="text" placeholder="0.2.0" />
+                <input v-model.trim="form.lowest_shinsekai_version" type="text" placeholder=">=0.2.0" />
               </label>
 
               <label class="submit-field" :class="{ invalid: fieldErrors.tags }">
