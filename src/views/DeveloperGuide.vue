@@ -4,7 +4,7 @@
 
     <main class="market-shell docs-shell">
       <section class="market-hero docs-hero">
-        <p class="eyebrow">SHINSEKAI SYSTEM / PLUGIN DEV</p>
+        <p class="eyebrow">SHINSEKAI COMMUNITY / PLUGIN DEV</p>
         <h1>Shinsekai 插件开发文档</h1>
         <p class="market-hero__lead">
           用 GitHub 管理源码，用 Registry CI 推断入口、打包、查验并同步到 R2。作者只需要保持仓库结构清楚，基础信息准确。
@@ -404,7 +404,7 @@ const submissionExample = `{
   "desc": "面向 Shinsekai 的示例插件，说明核心能力和适用场景。",
   "author": "Shinsekai Contributors",
   "repo": "https://github.com/shinsekai/plugin-example",
-  "shinsekai_version": ">=0.2.0",
+  "lowest_shinsekai_version": "0.2.0",
   "tags": ["example"],
   "social_link": "https://github.com/shinsekai"
 }`

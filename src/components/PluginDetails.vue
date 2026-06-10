@@ -34,7 +34,7 @@
             </dd>
           </div>
           <div><dt>版本</dt><dd>{{ plugin.version }}</dd></div>
-          <div><dt>Shinsekai 版本</dt><dd>{{ plugin.shinsekaiVersion || '未标注' }}</dd></div>
+          <div><dt>最低 Shinsekai 版本</dt><dd>{{ plugin.shinsekaiVersion || '未标注' }}</dd></div>
           <div><dt>入口</dt><dd>{{ plugin.entry || '未标注' }}</dd></div>
           <div><dt>更新时间</dt><dd>{{ plugin.updatedAt || '未标注' }}</dd></div>
         </dl>

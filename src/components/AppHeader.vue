@@ -11,7 +11,7 @@
 
       <nav class="site-nav" aria-label="Shinsekai navigation">
         <a :href="siteUrl" target="_blank" rel="noreferrer"><home :size="15" />首页</a>
-        <a :href="`${siteUrl}/discussions`" target="_blank" rel="noreferrer"><messages-square :size="15" />讨论板</a>
+        <a :href="discussionUrl" target="_blank" rel="noreferrer"><messages-square :size="15" />讨论板</a>
         <router-link :to="{ name: 'DeveloperGuide' }"><book-open :size="15" />开发文档</router-link>
         <a href="https://github.com/RachelForster/Shinsekai" target="_blank" rel="noreferrer">
           <svg class="github-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
@@ -19,7 +19,7 @@
           </svg>
           GitHub
         </a>
-        <a :href="registryForkUrl" target="_blank" rel="noreferrer"><database :size="15" />Registry</a>
+        <a :href="registryRepoUrl" target="_blank" rel="noreferrer"><database :size="15" />Registry</a>
       </nav>
 
       <div class="site-actions">
@@ -60,7 +60,8 @@ defineProps({
 defineEmits(['update:modelValue'])
 
 const siteUrl = import.meta.env.VITE_SITE_URL || '/'
-const registryForkUrl = import.meta.env.VITE_REGISTRY_FORK_URL || 'https://github.com/End0rph1nww/Shinsekai-Plugin-Registry'
+const discussionUrl = import.meta.env.VITE_DISCUSSIONS_URL || 'https://shinsekai.end0rph1n.icu/discussions'
+const registryRepoUrl = import.meta.env.VITE_REGISTRY_REPO_URL || 'https://github.com/RachelForster/Shinsekai-Plugin-Registry'
 const router = useRouter()
 
 function goSubmit() {

@@ -586,6 +586,8 @@
 
 .plugin-card__actions {
   display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 0.35rem;
   flex: none;
 }
@@ -638,6 +640,29 @@
   transition: all 0.18s ease;
 }
 
+.min-version-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
+  min-height: 1.8rem;
+  max-width: 9.5rem;
+  padding: 0.2rem 0.62rem;
+  border: 1px solid rgba(232, 120, 154, 0.34);
+  border-radius: 999px;
+  background: rgba(232, 120, 154, 0.14);
+  color: var(--sys-rose-deep);
+  font-size: 0.74rem;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.min-version-pill svg {
+  flex: 0 0 auto;
+  stroke-width: 2.2;
+}
+
 .repo-link:hover {
   border-color: var(--sys-rose) !important;
   background: linear-gradient(135deg, var(--sys-rose), var(--sys-rose-deep)) !important;
@@ -649,6 +674,12 @@
 .dark .repo-link {
   border-color: rgba(251, 113, 133, 0.32) !important;
   background: rgba(251, 113, 133, 0.08) !important;
+}
+
+.dark .min-version-pill {
+  border-color: rgba(251, 113, 133, 0.42);
+  background: rgba(251, 113, 133, 0.16);
+  color: #fb8da0;
 }
 
 .dark .repo-link:hover {

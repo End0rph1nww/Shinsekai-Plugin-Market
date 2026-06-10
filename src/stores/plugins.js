@@ -21,36 +21,6 @@ function resolveRegistryFallbackUrls() {
   return urls.length > 0 ? urls : DEFAULT_REGISTRY_FALLBACK_URLS
 }
 
-function parseGithubDate(value) {
-  const date = new Date(value)
-  return Number.isNaN(date.getTime()) ? null : date
-}
-
-async function fetchGithubRepoStats(plugin) {
-  if (!plugin.repoPath || plugin.stars > 0) return plugin
-
-  try {
-    const response = await fetch(`https://api.github.com/repos/${plugin.repoPath}`, {
-      headers: { Accept: 'application/vnd.github+json' }
-    })
-    if (!response.ok) return plugin
-
-    const repo = await response.json()
-    const repoUpdatedAtDate = parseGithubDate(repo.updated_at)
-    return {
-      ...plugin,
-      stars: Number(repo.stargazers_count) || 0,
-      forks: Number(repo.forks_count) || 0,
-      repoUpdatedAt: repo.updated_at || '',
-      repoUpdatedAtDate,
-      updatedAt: plugin.updatedAt || repo.updated_at || '',
-      updatedAtDate: plugin.updatedAtDate || repoUpdatedAtDate
-    }
-  } catch (_) {
-    return plugin
-  }
-}
-
 export const usePluginStore = defineStore('plugins', () => {
   const savedTheme = localStorage.getItem('theme-preference')
   const plugins = ref([])
@@ -198,9 +168,6 @@ export const usePluginStore = defineStore('plugins', () => {
         registryUrl.value = candidateUrl
         plugins.value = normalizedPlugins
         isLoading.value = false
-        Promise.all(normalizedPlugins.map(fetchGithubRepoStats))
-          .then(hydratedPlugins => { plugins.value = hydratedPlugins })
-          .catch(() => {})
         return
       } catch (err) {
         lastError = err

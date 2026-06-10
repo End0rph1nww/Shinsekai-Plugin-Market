@@ -4,7 +4,7 @@
 
     <main class="market-shell submit-shell">
       <section class="market-hero submit-hero">
-        <p class="eyebrow">SHINSEKAI SYSTEM / SUBMIT PLUGIN</p>
+        <p class="eyebrow">SHINSEKAI COMMUNITY / SUBMIT PLUGIN</p>
         <h1>提交 Shinsekai 插件</h1>
         <p class="market-hero__lead">
           作者继续用 GitHub 管理源码；市场只生成 Registry Issue 需要的 JSON。
@@ -54,8 +54,8 @@
 
             <div class="submit-grid">
               <label class="submit-field">
-                <span>支持 Shinsekai 版本（可选）</span>
-                <input v-model.trim="form.shinsekai_version" type="text" placeholder=">=0.2.0" />
+                <span>最低 Shinsekai 版本（可选）</span>
+                <input v-model.trim="form.lowest_shinsekai_version" type="text" placeholder="0.2.0" />
               </label>
 
               <label class="submit-field" :class="{ invalid: fieldErrors.tags }">
@@ -142,7 +142,7 @@ const form = reactive({
   desc: '',
   author: '',
   repo: '',
-  shinsekai_version: '',
+  lowest_shinsekai_version: '',
   tags: '',
   social_link: ''
 })

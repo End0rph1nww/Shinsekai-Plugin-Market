@@ -34,12 +34,13 @@ cp .env.example .env
 | Variable | Description | Default |
 | --- | --- | --- |
 | `VITE_PLUGIN_REGISTRY_URL` | Primary registry JSON URL. Prefer the R2 mirrored `registry/plugin_cache_original.json` for fresh reads. | Staging R2 generated registry |
-| `VITE_PLUGIN_REGISTRY_FALLBACK_URLS` | Optional comma-separated fallback registry URLs. | Staging fork GitHub Raw registry |
-| `VITE_SUBMIT_URL` | GitHub Issue URL for plugin submission. | Staging fork issue form |
+| `VITE_PLUGIN_REGISTRY_FALLBACK_URLS` | Optional comma-separated fallback registry URLs. | GitHub Raw registry |
+| `VITE_SUBMIT_URL` | GitHub Issue URL for plugin submission. | Main registry issue form |
 | `VITE_SITE_URL` | Shinsekai main site base URL. | `/` |
-| `VITE_REGISTRY_FORK_URL` | Registry link shown in header and footer. | Staging fork registry |
+| `VITE_DISCUSSIONS_URL` | Shinsekai community discussion board URL. | `https://shinsekai.end0rph1n.icu/discussions` |
+| `VITE_REGISTRY_REPO_URL` | Registry link shown in header and footer. | Main registry repo |
 
-During active development, defaults point to staging R2 plus `End0rph1nww/Shinsekai-Plugin-Registry` fallbacks so the market and client can see staged Issue/CI/R2 output without waiting for GitHub Raw cache. Before preparing the upstream-facing PR, switch these defaults or deployment variables to the accepted upstream registry and production R2 domain.
+Defaults point to the production R2 registry and `RachelForster/Shinsekai-Plugin-Registry` for GitHub Raw fallback, submission issues, and registry links.
 
 ## Submission Contract
 
@@ -51,7 +52,7 @@ The submit wizard emits:
   "desc": "Short description, 200 characters or fewer",
   "author": "author",
   "repo": "https://github.com/owner/repo",
-  "shinsekai_version": ">=0.2.0",
+  "lowest_shinsekai_version": "0.2.0",
   "tags": [],
   "social_link": ""
 }
@@ -76,7 +77,7 @@ Legacy source entries:
 Generated package fields are optional and shown when present:
 
 ```text
-display_name, version, shinsekai_version, download_url,
+display_name, version, lowest_shinsekai_version, download_url,
 sha256, commit_sha, size, updated_at, tags, logo, stars,
 package.source, package.url, package.sha256, package.size,
 package.r2_key, sec_scan

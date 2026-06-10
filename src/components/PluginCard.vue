@@ -46,6 +46,9 @@
       </div>
 
       <div class="plugin-card__actions">
+        <span v-if="minShinsekaiVersionLabel" class="min-version-pill">
+          <git-branch :size="12" />最低 {{ minShinsekaiVersionLabel }}
+        </span>
         <a
           v-if="plugin.repoUrl"
           class="repo-link"
@@ -79,6 +82,10 @@ const props = defineProps({
 const emit = defineEmits(['select'])
 
 const versionLabel = computed(() => props.plugin.version && props.plugin.version !== '未标注' ? props.plugin.version : '未标注')
+const minShinsekaiVersionLabel = computed(() => {
+  const value = String(props.plugin.shinsekaiVersion || '').trim()
+  return value && value !== '未标注' ? value : ''
+})
 const starLabel = computed(() => props.plugin.stars > 0 ? props.plugin.stars.toLocaleString() : '0')
 const packageLabel = computed(() => props.plugin.packageSource === 'r2' ? 'R2 包' : '安装包')
 const packageSizeLabel = computed(() => formatBytes(props.plugin.packageSize))

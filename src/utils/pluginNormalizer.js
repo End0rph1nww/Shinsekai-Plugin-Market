@@ -1,12 +1,12 @@
-export const DEFAULT_REGISTRY_URL = 'https://pub-9e11c3d88dbc49699652c547dcf7efe7.r2.dev/registry/plugin_cache_original.json'
-export const RAW_REGISTRY_URL = 'https://raw.githubusercontent.com/End0rph1nww/Shinsekai-Plugin-Registry/main/plugin_cache_original.json'
+export const DEFAULT_REGISTRY_URL = 'https://r2.shinsekai.studio/registry/plugin_cache_original.json'
+export const RAW_REGISTRY_URL = 'https://raw.githubusercontent.com/RachelForster/Shinsekai-Plugin-Registry/main/plugin_cache_original.json'
 export const DEFAULT_REGISTRY_FALLBACK_URLS = [RAW_REGISTRY_URL]
 export const SUBMIT_TEMPLATE = 'PLUGIN_PUBLISH.yml'
 export const SUBMIT_PLUGIN_INFO_FIELD = 'plugin-info'
-export const SUBMIT_PLUGIN_URL = `https://github.com/End0rph1nww/Shinsekai-Plugin-Registry/issues/new?template=${SUBMIT_TEMPLATE}`
+export const SUBMIT_PLUGIN_URL = `https://github.com/RachelForster/Shinsekai-Plugin-Registry/issues/new?template=${SUBMIT_TEMPLATE}`
 export const VERIFICATION_TEMPLATE = 'VERIFICATION_REQUEST.yml'
 export const VERIFICATION_INFO_FIELD = 'verification-info'
-export const VERIFICATION_REQUEST_URL = `https://github.com/End0rph1nww/Shinsekai-Plugin-Registry/issues/new?template=${VERIFICATION_TEMPLATE}`
+export const VERIFICATION_REQUEST_URL = `https://github.com/RachelForster/Shinsekai-Plugin-Registry/issues/new?template=${VERIFICATION_TEMPLATE}`
 export const MAX_SUBMISSION_DESC_LENGTH = 200
 const GITHUB_SLUG_PART_RE = /^[A-Za-z0-9_.-]+$/
 
@@ -202,7 +202,7 @@ export function normalizePlugin(raw, index = 0) {
     short_description: shortDescription,
     entry: asString(source.entry),
     version,
-    shinsekaiVersion: asString(source.shinsekai_version),
+    shinsekaiVersion: asString(source.lowest_shinsekai_version || source.shinsekai_version),
     downloadUrl,
     sha256,
     commitSha: asString(source.commit_sha),
@@ -308,8 +308,8 @@ export function normalizeSubmissionForm(form) {
     tags,
     social_link: asString(form.social_link)
   }
-  const shinsekaiVersion = asString(form.shinsekai_version)
-  if (shinsekaiVersion) payload.shinsekai_version = shinsekaiVersion
+  const shinsekaiVersion = asString(form.lowest_shinsekai_version || form.shinsekai_version)
+  if (shinsekaiVersion) payload.lowest_shinsekai_version = shinsekaiVersion
   return payload
 }
 
