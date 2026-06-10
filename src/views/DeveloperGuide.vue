@@ -129,33 +129,30 @@
             <p class="eyebrow">06 / UPDATES</p>
             <h2>版本与更新方式</h2>
             <p>
-              推荐插件作者用 GitHub Release 或 Tag 发布稳定版本。Registry CI 会按固定顺序解析源码 ref，并用解析到的 commit 判断是否需要重新打包。
+              推荐插件作者用 GitHub Release 或 Tag 发布稳定版本。作者提交表单不填写 <code>version</code>；
+              Registry CI 会先解析仓库当前应该发布的 ref，再比较该 ref 对应的 commit 是否已经打包。
             </p>
             <div class="docs-pipeline">
               <div>
-                <strong>1. Registry 固定版本</strong>
-                <span>如果维护者在 Registry 条目里指定 <code>version</code>，CI 会优先把它当作 Git ref 解析。</span>
+                <strong>1. GitHub Latest Release</strong>
+                <span>如果仓库存在 Release，CI 优先读取 Latest Release，并使用它的 <code>tag_name</code> 对应的 commit。</span>
               </div>
               <div>
-                <strong>2. GitHub Latest Release</strong>
-                <span>没有固定版本时，CI 优先读取仓库的 Latest Release，并使用其 <code>tag_name</code>。</span>
-              </div>
-              <div>
-                <strong>3. 最新 Tag</strong>
+                <strong>2. 最新 Tag</strong>
                 <span>没有 Release 时，CI 读取最新 Tag。建议使用 <code>v0.1.0</code> 这类清晰版本。</span>
               </div>
               <div>
-                <strong>4. 默认分支 HEAD</strong>
+                <strong>3. 默认分支 HEAD</strong>
                 <span>没有 Release/Tag 时，CI 会使用默认分支最新 commit，并用 <code>v0.0.0</code> 作为 fallback。</span>
               </div>
             </div>
             <div class="docs-note">
               <strong>显示版本来源</strong>
-              <span>包体版本优先读取 <code>plugin.py</code> 中的 <code>plugin_version</code>；没有时才使用 Release/Tag/ref fallback。发布新版本时请同时更新 <code>plugin_version</code> 并推 Tag 或 Release。</span>
+              <span><code>plugin.py</code> 中的 <code>plugin_version</code> 只决定市场和客户端显示的插件版本，不决定 CI 拉取哪个源码 ref。发布新版本时请同时更新 <code>plugin_version</code> 并创建新的 Release 或 Tag。</span>
             </div>
             <div class="docs-note docs-note--warn">
               <strong>自动轮询逻辑</strong>
-              <span>定时 workflow 会比较当前解析到的仓库 commit 与已打包的 <code>commit_sha</code>。不同就重新选择该插件打包；缺少包体 URL 也会重新打包。Star、Fork 和仓库更新时间会随生成索引刷新。</span>
+              <span>定时 workflow 会按上面的顺序先解析 Release/Tag/default branch，再比较解析到的 commit 与已打包的 <code>commit_sha</code>。如果仓库已经使用过 Release 或 Tag，后续只推默认分支不会触发新包；需要发布新的 Release 或 Tag。缺少包体 URL 时也会重新打包。Star、Fork 和仓库更新时间会随生成索引刷新。</span>
             </div>
           </section>
 
