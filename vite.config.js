@@ -15,7 +15,7 @@ export default defineConfig({
       readable: true
     })
   ],
-  base: './',
+  base: '/',
   assetsInclude: ['**/*.md'],
   resolve: {
     alias: {
